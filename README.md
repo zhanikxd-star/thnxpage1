@@ -2,7 +2,7 @@
 
 Thank-you page for [impact admissions](https://impact-admissions.com/), shown right after a family submits a request for the free admissions review.
 
-The page is in Russian, like the live site. It confirms the request, explains what happens next, and shares published facts about the team, the process, and outcomes. It does not ask for the lead again.
+The page is in Russian, like the live site. It confirms the request, says what happens next, and explains who Impact is and what the call covers. It does not ask for the lead again.
 
 ## Open locally
 

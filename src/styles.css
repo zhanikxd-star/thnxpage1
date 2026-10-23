@@ -605,6 +605,27 @@ summary {
   transform: rotate(45deg);
 }
 
+.who {
+  display: grid;
+  gap: 8px;
+}
+
+.who-copy {
+  display: grid;
+  gap: 14px;
+  max-width: 62ch;
+}
+
+.who-copy p {
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.who-copy a {
+  font-weight: 600;
+}
+
 .who-layout {
   display: grid;
   gap: 16px;
@@ -1239,7 +1260,20 @@ summary {
   }
 
   .footer-grid {
-    grid-template-columns: 1.4fr 1fr 1.2fr;
+    grid-template-columns: 1.4fr 1fr;
+    align-items: start;
+  }
+}
+
+@media (min-width: 900px) {
+  .who {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 48px;
+    align-items: start;
+  }
+
+  .who .section-head {
+    margin-bottom: 0;
   }
 }
 
