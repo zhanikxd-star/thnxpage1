@@ -487,6 +487,7 @@ summary {
 
 .timeline {
   display: grid;
+  align-items: stretch;
   gap: 12px;
 }
 
@@ -496,7 +497,10 @@ summary {
   box-shadow: var(--edge);
   padding: 20px;
   display: grid;
+  align-content: start;
   gap: 8px;
+  min-width: 0;
+  align-self: stretch;
 }
 
 .timeline-index {
@@ -522,6 +526,39 @@ summary {
 }
 
 .timeline a {
+  font-weight: 600;
+}
+
+.next-head {
+  max-width: none;
+}
+
+.tg-video {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  min-height: 48px;
+  margin-top: 8px;
+  padding: 12px 16px;
+  border-radius: var(--r-sm);
+  background: var(--accent);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: left;
+  text-decoration: none;
+  white-space: normal;
+}
+
+.tg-video:hover {
+  background: var(--accent-hover);
+  color: #fff;
+}
+
+.timeline-close {
+  color: var(--ink);
   font-weight: 600;
 }
 
@@ -1199,10 +1236,6 @@ summary {
 }
 
 @media (min-width: 700px) {
-  .timeline {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
   .roles {
     grid-template-columns: 1fr 1fr;
   }
@@ -1274,6 +1307,14 @@ summary {
 
   .who .section-head {
     margin-bottom: 0;
+  }
+}
+
+@media (min-width: 960px) {
+  .timeline {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 12px;
   }
 }
 
