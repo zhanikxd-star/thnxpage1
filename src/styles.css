@@ -562,6 +562,28 @@ summary {
   font-weight: 600;
 }
 
+.timeline li.video-block {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  border-radius: 0;
+  gap: 16px;
+}
+
+.video-frames {
+  border-radius: var(--r-md);
+  background: var(--surface-lavender);
+  box-shadow: var(--edge);
+  min-height: 200px;
+}
+
+.video-copy {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+}
+
 .prep {
   margin-top: 16px;
   background: var(--surface-lavender);
@@ -1312,9 +1334,31 @@ summary {
 
 @media (min-width: 960px) {
   .timeline {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: stretch;
     gap: 12px;
+  }
+
+  .timeline > li:first-child {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .timeline > li:last-child {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .timeline li.video-block {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .video-frames {
+    min-height: 100%;
   }
 }
 
