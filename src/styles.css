@@ -605,6 +605,19 @@ summary {
   line-height: 1.5;
 }
 
+.prep-list {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.prep-label {
+  margin: 0;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 15px;
+}
+
 .checks {
   display: grid;
   gap: 8px;
