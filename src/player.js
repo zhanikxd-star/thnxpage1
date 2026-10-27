@@ -56,6 +56,8 @@ function paint(root, player, playing) {
     const ratio = duration > 0 ? Math.min(1, current / duration) : 0;
     fill.style.width = `${ratio * 100}%`;
   }
+
+  root.classList.toggle("is-started", playing || current > 0.35);
 }
 
 export function mountExamplePlayer(root) {

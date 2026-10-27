@@ -193,6 +193,33 @@ a:hover {
   color: var(--accent);
 }
 
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.desk-nav a.nav-cta,
+.mob-nav a.nav-cta {
+  color: #fff;
+}
+
+.nav-cta:hover,
+.desk-nav a.nav-cta:hover,
+.mob-nav a.nav-cta:hover {
+  background: var(--accent-hover);
+  color: #fff;
+}
+
+.mob-nav .nav-cta {
+  margin-top: 8px;
+}
+
 .burger {
   margin-left: auto;
   width: 44px;
@@ -292,27 +319,22 @@ a:hover {
 .lede {
   width: min(100%, 1080px);
   max-width: none;
-  margin-top: 10px;
+  margin-top: 8px;
   font-size: clamp(16px, 1.25vw, 18px);
-  line-height: 1.4;
-}
-
-.lede-quiet {
-  color: var(--muted);
-  font-size: 16px;
+  line-height: 1.35;
 }
 
 .hero-split {
   display: grid;
-  grid-template-columns: minmax(0, 480px) minmax(240px, 1fr);
+  grid-template-columns: minmax(0, 640px) minmax(200px, 1fr);
   grid-template-areas:
     "media info"
-    "cta .";
-  column-gap: 36px;
+    "cta cta";
+  column-gap: 32px;
   row-gap: 12px;
   align-items: center;
   width: min(100%, 1080px);
-  margin-top: 14px;
+  margin-top: 12px;
   text-align: left;
 }
 
@@ -327,10 +349,11 @@ a:hover {
 .hero-cta {
   grid-area: cta;
   justify-self: stretch;
+  width: 100%;
   margin-top: 0;
   gap: 8px;
-  min-height: 44px;
-  padding: 10px 22px;
+  min-height: 48px;
+  padding: 12px 22px;
 }
 
 .hero-info {
@@ -341,7 +364,7 @@ a:hover {
 
 .hero-points {
   display: grid;
-  gap: 14px;
+  gap: 12px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -519,6 +542,37 @@ a:hover {
   inset: 0;
   z-index: 2;
   cursor: pointer;
+}
+
+.player-poster {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+}
+
+.player.is-started .player-poster {
+  display: none;
+}
+
+.hero-trust {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 22px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.hero-trust strong {
+  color: var(--ink);
+  font-weight: 700;
 }
 
 .player-bar {
@@ -1482,10 +1536,10 @@ a.stat-card:hover {
     grid-template-columns: 1fr;
     grid-template-areas:
       "media"
-      "cta"
-      "info";
-    row-gap: 6px;
-    margin-top: 6px;
+      "info"
+      "cta";
+    row-gap: 8px;
+    margin-top: 8px;
   }
 
   .hero-points {
@@ -1509,10 +1563,13 @@ a.stat-card:hover {
     font-size: 13px;
   }
 
-  .vsl,
-  .hero-cta {
-    width: min(100%, 460px);
+  .vsl {
+    width: min(100%, 520px);
     margin-inline: auto;
+  }
+
+  .hero-cta {
+    width: 100%;
   }
 
   .hero .player-stage {
@@ -1742,18 +1799,51 @@ a.stat-card:hover {
 
 @media (min-width: 960px) and (max-height: 820px) {
   .hero-split {
-    grid-template-columns: minmax(0, 400px) minmax(220px, 1fr);
-    margin-top: 8px;
-    column-gap: 28px;
-    row-gap: 10px;
+    grid-template-columns: minmax(0, 500px) minmax(180px, 1fr);
+    margin-top: 6px;
+    column-gap: 20px;
+    row-gap: 6px;
   }
 
   .hero-stack h1 {
-    font-size: 32px;
+    font-size: 28px;
   }
 
-  .hero-points {
-    gap: 10px;
+  .hero .mark-harvard,
+  .hero .mark-toronto {
+    font-size: 44px;
+  }
+
+  .hero .mark-stanford,
+  .hero .mark-nyu {
+    font-size: 52px;
+  }
+
+  .hero .mark-oxford {
+    font-size: 48px;
+  }
+
+  .hero .mark-mit {
+    font-size: 42px;
+  }
+
+  .hero .mark-ucl,
+  .hero .mark-kaist,
+  .hero .mark-hkust {
+    font-size: 36px;
+  }
+
+  .hero .mark-delft,
+  .hero .mark-munich {
+    font-size: 38px;
+  }
+
+  .hero-trust {
+    margin-top: 6px;
+  }
+
+  .hero .uni-strip {
+    margin-top: 4px;
   }
 }
 
