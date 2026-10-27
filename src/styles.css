@@ -40,6 +40,10 @@ html {
   scroll-padding-top: calc(var(--nav-h) + 12px);
 }
 
+html.is-paging {
+  scroll-behavior: auto;
+}
+
 body {
   margin: 0;
   background: var(--paper);
