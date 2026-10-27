@@ -168,3 +168,59 @@ consultDialog?.querySelector("[data-close-consult]")?.addEventListener("click", 
 consultDialog?.addEventListener("click", (event) => {
   if (event.target === consultDialog) dismissConsultDialog();
 });
+
+const selectionTimer = document.querySelector("[data-selection-timer]");
+
+if (selectionTimer) {
+  const HOUR_MS = 60 * 60 * 1000;
+  const storageKey = "vls-uni-session-deadline";
+  const saved = sessionStorage.getItem(storageKey);
+  let deadline = Number(saved);
+  if (!saved || !Number.isFinite(deadline)) {
+    deadline = Date.now() + HOUR_MS;
+    sessionStorage.setItem(storageKey, String(deadline));
+  }
+
+  const hoursEl = selectionTimer.querySelector("[data-timer-hours]");
+  const minutesEl = selectionTimer.querySelector("[data-timer-minutes]");
+  const secondsEl = selectionTimer.querySelector("[data-timer-seconds]");
+  const spoken = document.querySelector("[data-timer-spoken]");
+  let spokenMinute = -1;
+
+  function pad(value) {
+    return String(value).padStart(2, "0");
+  }
+
+  function minuteWord(minutes) {
+    const mod10 = minutes % 10;
+    const mod100 = minutes % 100;
+    if (mod10 === 1 && mod100 !== 11) return "минута";
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return "минуты";
+    return "минут";
+  }
+
+  function paintSelectionTimer() {
+    const left = Math.max(0, deadline - Date.now());
+    const totalSeconds = Math.ceil(left / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    if (hoursEl) hoursEl.textContent = pad(hours);
+    if (minutesEl) minutesEl.textContent = pad(minutes);
+    if (secondsEl) secondsEl.textContent = pad(seconds);
+
+    const wholeMinutes = Math.ceil(totalSeconds / 60);
+    if (spoken && wholeMinutes !== spokenMinute) {
+      spokenMinute = wholeMinutes;
+      spoken.textContent = totalSeconds <= 0
+        ? "Регистрация на эту сессию закрыта."
+        : wholeMinutes >= 60
+          ? "До закрытия регистрации остался 1 час."
+          : `До закрытия регистрации осталось ${wholeMinutes} ${minuteWord(wholeMinutes)}.`;
+    }
+
+    if (left > 0) window.setTimeout(paintSelectionTimer, 1000 - (Date.now() % 1000));
+  }
+
+  paintSelectionTimer();
+}
