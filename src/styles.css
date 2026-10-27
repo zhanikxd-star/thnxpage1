@@ -264,6 +264,7 @@ a:hover {
 }
 
 .hero-stack {
+  --hero-measure: calc(clamp(26px, 4.2vh, 44px) * 16);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -274,7 +275,8 @@ a:hover {
 }
 
 .hero-stack h1 {
-  max-width: 16em;
+  width: min(100%, var(--hero-measure));
+  max-width: none;
   font-size: clamp(26px, 4.2vh, 44px);
   line-height: 1.08;
 }
@@ -289,10 +291,13 @@ a:hover {
 }
 
 .lede {
+  width: min(100%, var(--hero-measure));
+  max-width: none;
   margin-top: 8px;
-  max-width: 42rem;
   font-size: clamp(14px, 1.9vh, 17px);
   line-height: 1.35;
+  text-align: justify;
+  hyphens: auto;
 }
 
 .lede-quiet {
@@ -1045,6 +1050,10 @@ a:hover {
     justify-self: stretch;
   }
 
+  .hero-stack {
+    --hero-measure: calc(22px * 16);
+  }
+
   .hero-stack h1 {
     font-size: 22px;
   }
@@ -1165,6 +1174,10 @@ a:hover {
     margin-top: 8px;
     column-gap: 28px;
     row-gap: 10px;
+  }
+
+  .hero-stack {
+    --hero-measure: calc(28px * 16);
   }
 
   .hero-stack h1 {
