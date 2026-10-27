@@ -884,6 +884,47 @@ a:hover {
   color: var(--text);
 }
 
+.checklist {
+  display: grid;
+  justify-items: center;
+}
+
+.checklist .section-head {
+  text-align: center;
+}
+
+.checklist-card {
+  width: min(100%, 640px);
+  display: grid;
+  justify-items: start;
+  gap: 22px;
+  padding: 28px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+
+.checklist-points {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.checklist-points li {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  line-height: 1.4;
+}
+
+.checklist-card .btn {
+  justify-self: center;
+  gap: 8px;
+}
+
 .consult {
   background: var(--ink);
   color: #fff;
