@@ -267,8 +267,8 @@ a:hover {
 }
 
 .hero-stack h1 {
-  max-width: 16em;
-  font-size: clamp(34px, 5vw, 64px);
+  max-width: 14em;
+  font-size: clamp(32px, 4.6vw, 56px);
 }
 
 .eyebrow {
@@ -293,7 +293,14 @@ a:hover {
 
 .hero-cta {
   margin-top: 22px;
+  gap: 8px;
   padding-inline: 28px;
+}
+
+.hero-after {
+  max-width: 36rem;
+  margin-top: 16px;
+  color: var(--muted);
 }
 
 .vsl {
@@ -312,6 +319,9 @@ a:hover {
 .player-note {
   margin: 0;
   padding: 8px 16px 14px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .uni-strip {
@@ -466,78 +476,11 @@ a:hover {
   font-variant-numeric: tabular-nums;
 }
 
-.player-note {
-  margin: 10px 14px 0;
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 600;
-}
-
 .vsl-caption {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 48px 1fr;
-  gap: 4px 12px;
-  align-items: center;
-  margin-top: 22px;
-  text-align: left;
-}
-
-.vsl-caption img {
-  grid-row: 1 / span 2;
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  object-fit: cover;
-}
-
-.vsl-caption blockquote,
-.vsl-caption .vsl-path {
-  grid-column: 1 / -1;
-}
-
-.vsl-name {
-  font-family: var(--font-display);
-  font-size: 20px;
-  color: var(--ink);
-}
-
-.vsl-name span,
-.vsl-role,
-.vsl-forbes,
-.vsl-path {
-  display: block;
-}
-
-.vsl-name span {
-  margin-top: 4px;
-  font-family: var(--font-body);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--muted);
-}
-
-.vsl-role,
-.vsl-forbes {
-  margin-top: 4px;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.vsl-caption blockquote {
-  margin: 14px 0 0;
-  padding: 0 0 0 14px;
-  border-left: 2px solid var(--logo-dot);
-}
-
-.vsl blockquote p {
-  font-size: 15px;
-}
-
-.vsl-path {
-  margin-top: 12px;
-  color: var(--muted);
-  font-size: 14px;
+  width: min(100%, 40rem);
+  margin: 16px auto 0;
+  text-align: center;
+  color: var(--text);
 }
 
 .section {
