@@ -541,6 +541,49 @@ a:hover {
   cursor: pointer;
 }
 
+.player:fullscreen,
+.player:-webkit-full-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  border: 0;
+  border-radius: 0;
+  background: #070732;
+}
+
+.player:fullscreen .player-stage,
+.player:-webkit-full-screen .player-stage {
+  width: min(100vw, calc((100vh - 108px) * 16 / 9));
+  max-height: calc(100vh - 108px);
+  margin-inline: auto;
+}
+
+.player:fullscreen .player-note,
+.player:-webkit-full-screen .player-note,
+.player:fullscreen .player-time,
+.player:-webkit-full-screen .player-time {
+  color: #d8d0c3;
+}
+
+.player:fullscreen .player-btn-quiet,
+.player:-webkit-full-screen .player-btn-quiet {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.player:fullscreen .player-track,
+.player:-webkit-full-screen .player-track {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.player:fullscreen .player-track span,
+.player:-webkit-full-screen .player-track span {
+  background: #fff;
+}
+
 .player-btn-quiet {
   background: transparent;
   color: var(--ink);

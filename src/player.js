@@ -63,6 +63,7 @@ export function mountExamplePlayer(root) {
   const videoId = root.dataset.videoId;
   const play = root.querySelector("[data-player-play]");
   const mute = root.querySelector("[data-player-mute]");
+  const fullscreen = root.querySelector("[data-player-fullscreen]");
   const surface = root.querySelector("[data-player-surface]");
   const status = root.querySelector("[data-player-status]");
   let head = 0;
@@ -114,6 +115,23 @@ export function mountExamplePlayer(root) {
     else player.mute();
     paint(root, player, player.getPlayerState() === window.YT.PlayerState.PLAYING);
   });
+
+  function paintFullscreen() {
+    if (!fullscreen) return;
+    const open = document.fullscreenElement === root;
+    fullscreen.textContent = open ? "Свернуть" : "На весь экран";
+    fullscreen.setAttribute("aria-pressed", open ? "true" : "false");
+    fullscreen.setAttribute("aria-label", open ? "Выйти из полного экрана" : "Открыть видео на весь экран");
+  }
+
+  fullscreen?.addEventListener("click", () => {
+    const request = root.requestFullscreen?.bind(root);
+    if (!request) return;
+    if (document.fullscreenElement === root) document.exitFullscreen?.();
+    else request().catch(() => {});
+  });
+  document.addEventListener("fullscreenchange", paintFullscreen);
+  paintFullscreen();
 
   root.addEventListener("contextmenu", (event) => {
     if (event.target.closest(".player-stage")) event.preventDefault();
