@@ -886,6 +886,77 @@ a:hover {
   margin-bottom: 8px;
 }
 
+.steps {
+  counter-reset: step;
+}
+
+.steps li {
+  counter-increment: step;
+}
+
+.steps h3::before {
+  content: counter(step, decimal-leading-zero);
+  display: block;
+  margin-bottom: 8px;
+  color: var(--accent);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.team li {
+  display: flex;
+  flex-direction: column;
+}
+
+.team-count {
+  margin-top: auto;
+  padding-top: 12px;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.compare {
+  display: grid;
+  gap: 12px;
+}
+
+.compare section {
+  padding: 22px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+}
+
+.compare ul {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.compare li {
+  padding-left: 16px;
+  position: relative;
+}
+
+.compare li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--line);
+}
+
+.compare section:last-child li::before {
+  background: var(--accent);
+}
+
 .cards p,
 .program li,
 .cases dd {
@@ -1255,7 +1326,8 @@ a:hover {
   }
 
   .quotes,
-  .cases {
+  .cases,
+  .compare {
     grid-template-columns: 1fr 1fr;
   }
 
@@ -1325,6 +1397,11 @@ a:hover {
   .cards,
   .program {
     grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .cards.steps,
+  .cards.team {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 
   .consult {
