@@ -1024,7 +1024,6 @@ a.stat-card:hover {
 
 .stats,
 .regions,
-.quotes,
 .cases,
 .cards {
   margin: 0;
@@ -1042,7 +1041,6 @@ a.stat-card:hover {
 .regions li,
 .cards li,
 .cases article,
-.quotes figure,
 .program section {
   background: var(--white);
   border: 1px solid var(--line);
@@ -1050,7 +1048,6 @@ a.stat-card:hover {
 }
 
 .section-tint .stats li,
-.section-tint .quotes figure,
 .section-tint .program section {
   background: var(--paper);
 }
@@ -1092,55 +1089,6 @@ a.stat-card:hover {
   margin-bottom: 6px;
   font-weight: 600;
   color: var(--ink);
-}
-
-.quotes {
-  display: grid;
-  gap: 12px;
-}
-
-.quotes figure {
-  height: 100%;
-  margin: 0;
-  padding: 18px 18px 16px;
-}
-
-.quotes blockquote {
-  margin: 0;
-}
-
-.quotes blockquote p::before {
-  content: "«";
-}
-
-.quotes blockquote p::after {
-  content: "»";
-}
-
-.quotes figcaption {
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid var(--line);
-  color: var(--ink);
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.role {
-  display: inline-block;
-  margin-right: 8px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: var(--paper-deep);
-  color: var(--ink);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.section-tint .role {
-  background: #fff;
 }
 
 .misses-head {
@@ -1187,53 +1135,6 @@ a.stat-card:hover {
   width: min(100%, 280px);
   height: auto;
   margin-inline: auto;
-}
-
-.visits {
-  display: grid;
-  gap: 16px;
-  margin-top: 28px;
-}
-
-.visits img {
-  width: 100%;
-  height: 280px;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 18px;
-}
-
-.visits figcaption {
-  margin-top: 8px;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.media-slots {
-  display: grid;
-  gap: 12px;
-  margin-top: 12px;
-}
-
-.media-slot {
-  min-height: 120px;
-  padding: 18px;
-  border: 1.5px dashed var(--line);
-  border-radius: var(--r);
-  background: transparent;
-}
-
-.media-slot-kicker {
-  margin-bottom: 6px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.media-slot p:last-child {
-  color: var(--muted);
 }
 
 .cards,
@@ -1786,25 +1687,15 @@ a.stat-card:hover {
     width: 98%;
   }
 
-  .quotes,
   .cases,
   .compare {
     grid-template-columns: 1fr 1fr;
-  }
-
-  .visits {
-    grid-template-columns: 1.15fr 0.85fr;
   }
 
   .misses {
     grid-template-columns: 1fr 1fr;
   }
 
-  .visits img {
-    height: 420px;
-  }
-
-  .media-slots,
   .fields {
     grid-template-columns: 1fr 1fr;
   }
