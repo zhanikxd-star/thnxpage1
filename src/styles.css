@@ -416,7 +416,7 @@ a:hover {
 
 .uni-strip {
   width: 100%;
-  margin-top: 12px;
+  margin-top: 28px;
 }
 
 .uni-strip .uni-label {
@@ -1686,7 +1686,7 @@ a.stat-card:hover {
   }
 
   .uni-strip {
-    margin-top: 0;
+    margin-top: 16px;
   }
 
   .uni-strip .uni-label {
@@ -1937,7 +1937,7 @@ a.stat-card:hover {
   }
 
   .hero .uni-strip {
-    margin-top: 4px;
+    margin-top: 16px;
   }
 }
 
