@@ -665,6 +665,33 @@ a:hover {
   background: var(--white);
 }
 
+.trust {
+  background: var(--ink);
+  color: #fff;
+}
+
+.trust h2,
+.trust .section-head p {
+  color: #fff;
+}
+
+.trust .section-head p,
+.trust .uni-label {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.trust .unis li {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #fff;
+}
+
+.trust .stat-card,
+.trust a.stat-card:hover {
+  background: var(--white);
+  color: var(--ink);
+}
+
 .section-head {
   max-width: 40rem;
   margin-bottom: 28px;
