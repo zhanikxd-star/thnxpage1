@@ -1245,6 +1245,29 @@ a.stat-card:hover {
   background: var(--white);
 }
 
+.case-with-photo {
+  padding: 0 0 18px;
+  overflow: hidden;
+}
+
+.case-photo {
+  display: block;
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  object-position: center 30%;
+}
+
+.case-with-photo header,
+.case-with-photo dl {
+  padding-right: 18px;
+  padding-left: 18px;
+}
+
+.case-with-photo header {
+  padding-top: 16px;
+}
+
 .cases header p {
   color: var(--muted);
   font-weight: 600;
