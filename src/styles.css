@@ -1247,9 +1247,17 @@ a.stat-card:hover {
 }
 
 .case-with-photo header,
-.case-with-photo dl {
+.case-with-photo dl,
+.case-path-title {
   padding-right: 18px;
   padding-left: 18px;
+}
+
+.case-path-title {
+  margin: 16px 0 0;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 700;
 }
 
 .case-with-photo header {
