@@ -69,18 +69,35 @@
             </p>
           </div>
 
-          <!-- Файла VSL нет. Это фотография и подпись, не плеер: элемента video и кнопки воспроизведения нет. -->
+          <!-- Пример, не речь основателя. Файл VSL Альнура Акчурина по-прежнему не опубликован.
+               Плеер свой: шкала не кликается, чужая перемотка возвращается назад. -->
           <figure class="vsl">
-            <div class="vsl-poster">
-              <img
-                src="/team/alnur-akchurin.webp"
-                width="240"
-                height="240"
-                alt="Альнур Акчурин, основатель impact admissions"
-              />
+            <div class="player" data-video-id="ERFeOgqk324">
+              <div class="player-stage">
+                <div id="vsl-youtube"></div>
+                <div class="player-shield" data-player-surface></div>
+              </div>
+              <div class="player-bar">
+                <button class="player-btn" type="button" data-player-play aria-pressed="false">Смотреть</button>
+                <div class="player-track" aria-hidden="true">
+                  <span data-player-fill></span>
+                </div>
+                <span class="player-time" data-player-time>0:00</span>
+                <button class="player-btn player-btn-quiet" type="button" data-player-mute aria-pressed="false">Звук</button>
+              </div>
+              <p class="player-note" data-player-status>
+                Пример ролика. Речь основателя ещё не опубликована. Перемотка отключена.
+              </p>
             </div>
             <figcaption>
-              <p class="vsl-status">Ролик с речью основателя ещё не опубликован. Это фотография, не видео.</p>
+              <div class="vsl-person">
+                <img
+                  src="/team/alnur-akchurin.webp"
+                  width="72"
+                  height="72"
+                  alt=""
+                />
+                <div>
               <p class="vsl-name">Альнур Акчурин <span>«30 до 30»</span></p>
               <p class="vsl-role">Основатель impact admissions</p>
               <p class="vsl-forbes">Forbes Kazakhstan «30 моложе 30», 2020</p>
@@ -90,6 +107,8 @@
               <p class="vsl-path">
                 Его приняли в Northwestern, Rice, Yale и Amherst. Northwestern, Rice и Amherst дали полный грант.
               </p>
+                </div>
+              </div>
             </figcaption>
           </figure>
 

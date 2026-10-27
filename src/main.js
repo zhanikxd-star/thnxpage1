@@ -4,6 +4,9 @@ import "@fontsource/onest/400.css";
 import "@fontsource/onest/500.css";
 import "@fontsource/onest/600.css";
 import "./styles.css";
+import { mountExamplePlayer } from "./player.js";
+
+mountExamplePlayer(document.querySelector(".player"));
 
 const header = document.querySelector(".header");
 const navToggle = document.querySelector("#nav-toggle");
