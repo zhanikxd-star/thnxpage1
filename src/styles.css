@@ -1346,11 +1346,6 @@ a.stat-card:hover {
   margin-bottom: 0;
 }
 
-.more-cases {
-  margin-top: 18px;
-  color: var(--muted);
-}
-
 .faq-wrap {
   max-width: 800px;
 }
