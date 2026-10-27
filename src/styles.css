@@ -414,15 +414,6 @@ a:hover {
   overflow: hidden;
 }
 
-.player-note {
-  margin: 0;
-  padding: 4px 12px 8px;
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.3;
-}
-
 .uni-strip {
   width: 100%;
   margin-top: 12px;
@@ -613,8 +604,6 @@ a:hover {
   margin-inline: auto;
 }
 
-.player:fullscreen .player-note,
-.player:-webkit-full-screen .player-note,
 .player:fullscreen .player-time,
 .player:-webkit-full-screen .player-time {
   color: #d8d0c3;
@@ -1726,10 +1715,6 @@ a.stat-card:hover {
 
   .hero .player-stage {
     width: 100%;
-  }
-
-  .player-note {
-    padding-bottom: 2px;
   }
 
   .uni-strip {
