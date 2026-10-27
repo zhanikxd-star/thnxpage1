@@ -1293,6 +1293,10 @@ a.stat-card:hover {
   object-position: center 36%;
 }
 
+.case-photo[src*="arnur"] {
+  object-position: center 28%;
+}
+
 .case-with-photo header,
 .case-with-photo dl {
   padding-right: 18px;
