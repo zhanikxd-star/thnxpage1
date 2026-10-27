@@ -439,7 +439,7 @@ a:hover {
 
 .mark-harvard {
   font-family: "Liberation Serif", "Times New Roman", serif;
-  font-size: 32px;
+  font-size: 48px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -447,27 +447,27 @@ a:hover {
 
 .mark-stanford {
   font-family: "Liberation Serif", Georgia, serif;
-  font-size: 40px;
+  font-size: 60px;
   font-style: italic;
 }
 
 .mark-mit {
   font-family: var(--font-display);
-  font-size: 30px;
+  font-size: 46px;
   font-weight: 600;
   letter-spacing: 0.14em;
 }
 
 .mark-oxford {
   font-family: "Liberation Serif", Georgia, serif;
-  font-size: 36px;
+  font-size: 54px;
 }
 
 .mark-ucl,
 .mark-kaist,
 .mark-hkust {
   font-family: var(--font-display);
-  font-size: 26px;
+  font-size: 40px;
   font-weight: 500;
   letter-spacing: 0.1em;
 }
@@ -475,21 +475,21 @@ a:hover {
 .mark-delft,
 .mark-munich {
   font-family: var(--font-body);
-  font-size: 28px;
+  font-size: 42px;
   font-weight: 700;
   letter-spacing: -0.03em;
 }
 
 .mark-nyu {
   font-family: "Liberation Serif", Georgia, serif;
-  font-size: 40px;
+  font-size: 60px;
   font-weight: 700;
   letter-spacing: 0.04em;
 }
 
 .mark-toronto {
   font-family: "Liberation Serif", Georgia, serif;
-  font-size: 32px;
+  font-size: 48px;
   font-style: italic;
 }
 
@@ -1213,6 +1213,10 @@ a:hover {
     justify-self: stretch;
   }
 
+  .hero-stack {
+    padding-top: 2px;
+  }
+
   .hero-stack h1 {
     font-size: 18px;
   }
@@ -1232,8 +1236,16 @@ a:hover {
     width: 100%;
   }
 
+  .player-note {
+    padding-bottom: 2px;
+  }
+
   .uni-strip {
-    margin-top: 8px;
+    margin-top: 0;
+  }
+
+  .hero {
+    padding-bottom: 4px;
   }
 }
 
