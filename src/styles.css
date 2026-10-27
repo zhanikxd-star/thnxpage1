@@ -826,6 +826,17 @@ a:hover {
   font-weight: 600;
 }
 
+.misses-student {
+  margin: 28px 0 0;
+}
+
+.misses-student img {
+  display: block;
+  width: min(100%, 280px);
+  height: auto;
+  margin-inline: auto;
+}
+
 .visits {
   display: grid;
   gap: 16px;
@@ -1395,6 +1406,42 @@ a:hover {
 
   .section {
     padding: 96px 0;
+  }
+
+  .misses-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+    grid-template-areas:
+      "head photo"
+      "cards photo"
+      "note photo";
+    column-gap: 28px;
+    row-gap: 0;
+    align-items: center;
+  }
+
+  .misses-head {
+    grid-area: head;
+  }
+
+  .misses-layout .misses {
+    grid-area: cards;
+  }
+
+  .misses-layout .misses-note {
+    grid-area: note;
+  }
+
+  .misses-student {
+    grid-area: photo;
+    margin: 0;
+    align-self: end;
+  }
+
+  .misses-student img {
+    width: 100%;
+    max-width: none;
+    margin: 0;
   }
 
   .stats {
