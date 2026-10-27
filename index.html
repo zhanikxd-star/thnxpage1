@@ -90,10 +90,10 @@
                   </p>
                 </div>
               </figure>
-              <a class="btn hero-cta" href="#consult">
+              <button class="btn hero-cta" type="button" data-open-consult>
                 Записаться на бесплатную консультацию
                 <span aria-hidden="true">→</span>
-              </a>
+              </button>
             </div>
 
             <div class="hero-info">
@@ -832,6 +832,71 @@
         <p><a href="https://impact-admissions.com/privacy">Политика конфиденциальности</a></p>
       </div>
     </footer>
+
+    <dialog class="consult-dialog" id="consult-dialog" aria-labelledby="consult-dialog-title">
+      <div class="consult-panel">
+        <button class="consult-dialog-close" type="button" data-close-consult>
+          <span class="visually-hidden">Закрыть</span>
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path d="M6 6 18 18M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+          </svg>
+        </button>
+        <h2 id="consult-dialog-title">Запишитесь на бесплатный разбор</h2>
+        <p class="consult-dialog-line">Онлайн-встреча от 30 до 45 минут.</p>
+
+        <div class="form-success" id="consult-dialog-success" tabindex="-1" hidden>
+          <h3>Заявка принята на этой странице</h3>
+          <p>Она никуда не отправлена: адрес приёма ещё не назван. Когда он появится, с вами свяжутся, чтобы договориться о времени бесплатного разбора.</p>
+        </div>
+
+        <form id="consult-dialog-form" novalidate>
+          <div class="form-error" id="consult-dialog-error" role="alert" hidden>
+            <p>Заявку пока нельзя отправить: заполните обязательные поля.</p>
+          </div>
+
+          <div class="fields">
+            <label>
+              <span>Имя родителя или ученика</span>
+              <input name="name" type="text" autocomplete="name" required />
+              <small id="dialog-error-name" data-error="name" hidden></small>
+            </label>
+
+            <label>
+              <span>Телефон</span>
+              <input name="phone" type="tel" inputmode="tel" autocomplete="tel" required />
+              <small id="dialog-error-phone" data-error="phone" hidden></small>
+            </label>
+
+            <label>
+              <span>Класс ученика</span>
+              <select name="grade" required>
+                <option value="">Выберите класс</option>
+                <option>8 класс</option>
+                <option>9 класс</option>
+                <option>10 класс</option>
+                <option>11 класс</option>
+                <option>Другое</option>
+              </select>
+              <small id="dialog-error-grade" data-error="grade" hidden></small>
+            </label>
+
+            <label>
+              <span>Страна интереса</span>
+              <select name="country" required>
+                <option value="">Выберите</option>
+                <option value="pending">Список стран ещё не утверждён</option>
+              </select>
+              <small id="dialog-error-country" data-error="country" hidden></small>
+            </label>
+          </div>
+
+          <button class="btn" type="submit">Записаться на бесплатную консультацию</button>
+          <p class="consent">
+            Нажимая кнопку, вы соглашаетесь с <a href="https://impact-admissions.com/privacy">политикой обработки персональных данных</a>.
+          </p>
+        </form>
+      </div>
+    </dialog>
 
     <script type="module" src="/src/main.js"></script>
   </body>

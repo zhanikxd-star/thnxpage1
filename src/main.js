@@ -41,90 +41,130 @@ faqItems.forEach((item) => {
   });
 });
 
-const form = document.querySelector("#consult-form");
-const success = document.querySelector("#consult-success");
-const errorSummary = document.querySelector("#consult-error");
-
 // Куда уходит заявка, сайт не называет: ни CRM, ни почта, ни другой адрес.
 // Этот обработчик только показывает локальный успех и ничего не отправляет.
 // Текст успеха и текст ошибки на публичных страницах не найдены — строки ниже плейсхолдер.
 
 const PHONE_MIN_DIGITS = 6;
 
-function fieldError(name) {
-  return form?.querySelector(`[data-error="${name}"]`);
-}
-
-function validateField(field) {
-  const value = field.value;
-
-  if (field.name === "name") {
-    if (!value.trim()) return "Укажите имя";
-  }
-
-  if (field.name === "phone") {
-    // Маска и обязательный код страны на сайте не описаны.
-    // Ниже только пустое поле и строка без нескольких цифр, не международная маска.
-    const digits = value.replace(/\D/g, "");
-    if (!value.trim() || digits.length < PHONE_MIN_DIGITS) return "Укажите телефон";
-  }
-
-  if (field.name === "grade" && !value) return "Выберите класс";
-  if (field.name === "country" && !value) return "Выберите страну интереса";
-
-  return "";
-}
-
-function showFieldError(field, message) {
-  const slot = fieldError(field.name);
-  field.setAttribute("aria-invalid", message ? "true" : "false");
-  if (!slot) return;
-  slot.textContent = message;
-  slot.hidden = !message;
-  if (message) field.setAttribute("aria-describedby", slot.id);
-  else field.removeAttribute("aria-describedby");
-}
-
-function clearFormErrors() {
+function bindConsultForm(form) {
   if (!form) return;
-  errorSummary.hidden = true;
-  Array.from(form.elements).forEach((field) => {
-    if (!field.name || !fieldError(field.name)) return;
-    showFieldError(field, "");
+  const panel = form.closest(".consult-panel");
+  const success = panel?.querySelector(".form-success");
+  const errorSummary = form.querySelector(".form-error");
+
+  function fieldError(name) {
+    return form.querySelector(`[data-error="${name}"]`);
+  }
+
+  function validateField(field) {
+    const value = field.value;
+
+    if (field.name === "name") {
+      if (!value.trim()) return "Укажите имя";
+    }
+
+    if (field.name === "phone") {
+      // Маска и обязательный код страны на сайте не описаны.
+      // Ниже только пустое поле и строка без нескольких цифр, не международная маска.
+      const digits = value.replace(/\D/g, "");
+      if (!value.trim() || digits.length < PHONE_MIN_DIGITS) return "Укажите телефон";
+    }
+
+    if (field.name === "grade" && !value) return "Выберите класс";
+    if (field.name === "country" && !value) return "Выберите страну интереса";
+
+    return "";
+  }
+
+  function showFieldError(field, message) {
+    const slot = fieldError(field.name);
+    field.setAttribute("aria-invalid", message ? "true" : "false");
+    if (!slot) return;
+    slot.textContent = message;
+    slot.hidden = !message;
+    if (message) field.setAttribute("aria-describedby", slot.id);
+    else field.removeAttribute("aria-describedby");
+  }
+
+  function clearFormErrors() {
+    if (errorSummary) errorSummary.hidden = true;
+    Array.from(form.elements).forEach((field) => {
+      if (!field.name || !fieldError(field.name)) return;
+      showFieldError(field, "");
+    });
+  }
+
+  form.addEventListener("input", (event) => {
+    const field = event.target;
+    if (!(field instanceof HTMLElement) || !field.name || !fieldError(field.name)) return;
+    if (field.getAttribute("aria-invalid") === "true") {
+      showFieldError(field, validateField(field));
+    }
+  });
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!success || !errorSummary) return;
+
+    const fields = ["name", "phone", "grade", "country"]
+      .map((name) => form.elements.namedItem(name))
+      .filter((field) => field instanceof HTMLInputElement || field instanceof HTMLSelectElement);
+
+    let firstInvalid = null;
+    fields.forEach((field) => {
+      const message = validateField(field);
+      showFieldError(field, message);
+      if (message && !firstInvalid) firstInvalid = field;
+    });
+
+    if (firstInvalid) {
+      errorSummary.hidden = false;
+      firstInvalid.focus();
+      return;
+    }
+
+    clearFormErrors();
+    form.hidden = true;
+    success.hidden = false;
+    success.focus();
   });
 }
 
-form?.addEventListener("input", (event) => {
-  const field = event.target;
-  if (!(field instanceof HTMLElement) || !field.name || !fieldError(field.name)) return;
-  if (field.getAttribute("aria-invalid") === "true") {
-    showFieldError(field, validateField(field));
-  }
+bindConsultForm(document.querySelector("#consult-form"));
+bindConsultForm(document.querySelector("#consult-dialog-form"));
+
+const consultDialog = document.querySelector("#consult-dialog");
+
+function openConsultDialog() {
+  if (!consultDialog || consultDialog.open) return;
+  document.body.classList.add("dialog-lock");
+  consultDialog.showModal();
+  const name = consultDialog.querySelector("input[name='name']");
+  const success = consultDialog.querySelector(".form-success");
+  if (name && !name.closest("form")?.hidden) name.focus();
+  else success?.focus();
+}
+
+function dismissConsultDialog() {
+  if (!consultDialog?.open) return;
+  // close() внутри click по кнопке в диалоге не шлёт событие close.
+  // Откладываем вызов, чтобы снять блокировку прокрутки в обработчике close.
+  queueMicrotask(() => {
+    if (consultDialog.open) consultDialog.close();
+  });
+}
+
+consultDialog?.addEventListener("close", () => {
+  document.body.classList.remove("dialog-lock");
 });
 
-form?.addEventListener("submit", (event) => {
-  event.preventDefault();
-  if (!form || !success || !errorSummary) return;
+document.querySelectorAll("[data-open-consult]").forEach((button) => {
+  button.addEventListener("click", openConsultDialog);
+});
 
-  const fields = ["name", "phone", "grade", "country"]
-    .map((name) => form.elements.namedItem(name))
-    .filter((field) => field instanceof HTMLInputElement || field instanceof HTMLSelectElement);
+consultDialog?.querySelector("[data-close-consult]")?.addEventListener("click", dismissConsultDialog);
 
-  let firstInvalid = null;
-  fields.forEach((field) => {
-    const message = validateField(field);
-    showFieldError(field, message);
-    if (message && !firstInvalid) firstInvalid = field;
-  });
-
-  if (firstInvalid) {
-    errorSummary.hidden = false;
-    firstInvalid.focus();
-    return;
-  }
-
-  clearFormErrors();
-  form.hidden = true;
-  success.hidden = false;
-  success.focus();
+consultDialog?.addEventListener("click", (event) => {
+  if (event.target === consultDialog) dismissConsultDialog();
 });
