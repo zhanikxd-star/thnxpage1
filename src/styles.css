@@ -1688,17 +1688,19 @@ a.stat-card:hover {
   }
 
   .checklist {
-    grid-template-columns: minmax(0, 1fr) minmax(260px, 440px);
+    grid-template-columns: minmax(260px, 440px) minmax(0, 1fr);
     align-items: center;
     justify-items: stretch;
     column-gap: 28px;
   }
 
   .checklist-copy {
-    justify-self: end;
+    order: 2;
+    justify-self: start;
   }
 
   .checklist-gift {
+    order: 1;
     margin: 0;
   }
 
