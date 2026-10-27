@@ -558,23 +558,6 @@ a:hover {
   display: none;
 }
 
-.hero-trust {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 6px 22px;
-  margin: 12px 0 0;
-  padding: 0;
-  list-style: none;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.hero-trust strong {
-  color: var(--ink);
-  font-weight: 700;
-}
-
 .player-bar {
   display: flex;
   align-items: center;
@@ -1836,10 +1819,6 @@ a.stat-card:hover {
   .hero .mark-delft,
   .hero .mark-munich {
     font-size: 38px;
-  }
-
-  .hero-trust {
-    margin-top: 6px;
   }
 
   .hero .uni-strip {
