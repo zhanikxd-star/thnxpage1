@@ -264,21 +264,19 @@ a:hover {
 }
 
 .hero-stack {
-  --hero-measure: calc(clamp(26px, 4.2vh, 44px) * 16);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: safe center;
   text-align: center;
-  width: 100%;
   height: 100%;
 }
 
 .hero-stack h1 {
-  width: min(100%, var(--hero-measure));
+  width: min(100%, 1080px);
   max-width: none;
-  font-size: clamp(26px, 4.2vh, 44px);
-  line-height: 1.08;
+  font-size: clamp(28px, 2.5vw, 36px);
+  line-height: 1.12;
 }
 
 .eyebrow {
@@ -291,13 +289,11 @@ a:hover {
 }
 
 .lede {
-  width: min(100%, var(--hero-measure));
+  width: min(100%, 1080px);
   max-width: none;
-  margin-top: 8px;
-  font-size: clamp(14px, 1.9vh, 17px);
-  line-height: 1.35;
-  text-align: justify;
-  hyphens: auto;
+  margin-top: 10px;
+  font-size: clamp(16px, 1.25vw, 18px);
+  line-height: 1.4;
 }
 
 .lede-quiet {
@@ -1050,12 +1046,8 @@ a:hover {
     justify-self: stretch;
   }
 
-  .hero-stack {
-    --hero-measure: calc(22px * 16);
-  }
-
   .hero-stack h1 {
-    font-size: 22px;
+    font-size: 18px;
   }
 
   .lede,
@@ -1176,12 +1168,8 @@ a:hover {
     row-gap: 10px;
   }
 
-  .hero-stack {
-    --hero-measure: calc(28px * 16);
-  }
-
   .hero-stack h1 {
-    font-size: 28px;
+    font-size: 32px;
   }
 
   .hero-points {
