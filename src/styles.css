@@ -1174,46 +1174,6 @@ a.stat-card:hover {
   font-weight: 600;
 }
 
-.compare {
-  display: grid;
-  gap: 12px;
-}
-
-.compare section {
-  padding: 22px;
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: var(--r);
-}
-
-.compare ul {
-  margin: 14px 0 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 10px;
-}
-
-.compare li {
-  padding-left: 16px;
-  position: relative;
-}
-
-.compare li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.55em;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--line);
-}
-
-.compare section:last-child li::before {
-  background: var(--accent);
-}
-
 .cards p,
 .program li,
 .cases dd {
@@ -1747,8 +1707,7 @@ a.stat-card:hover {
     width: 98%;
   }
 
-  .cases,
-  .compare {
+  .cases {
     grid-template-columns: 1fr 1fr;
   }
 
