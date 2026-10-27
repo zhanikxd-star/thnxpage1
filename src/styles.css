@@ -178,6 +178,7 @@ a:hover {
 .desk-nav {
   display: none;
   margin-left: auto;
+  align-items: center;
   gap: 18px;
 }
 
@@ -189,6 +190,13 @@ a:hover {
   font-weight: 500;
 }
 
+.desk-nav a {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  min-height: 36px;
+}
+
 .desk-nav a:hover,
 .mob-nav a:hover {
   color: var(--accent);
@@ -198,11 +206,13 @@ a:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-height: 36px;
   padding: 8px 16px;
   border-radius: 999px;
   background: var(--accent);
   color: #fff;
   font-weight: 600;
+  line-height: 1;
 }
 
 .desk-nav a.nav-cta,
