@@ -1252,12 +1252,16 @@ a.stat-card:hover {
   justify-items: center;
 }
 
+.checklist-copy {
+  width: min(100%, 640px);
+}
+
 .checklist .section-head {
   text-align: center;
 }
 
 .checklist-card {
-  width: min(100%, 640px);
+  width: 100%;
   display: grid;
   justify-items: start;
   gap: 22px;
@@ -1265,6 +1269,17 @@ a.stat-card:hover {
   background: var(--white);
   border: 1px solid var(--line);
   border-radius: 18px;
+}
+
+.checklist-gift {
+  margin: 28px 0 0;
+}
+
+.checklist-gift img {
+  display: block;
+  width: min(100%, 300px);
+  height: auto;
+  margin-inline: auto;
 }
 
 .checklist-points {
@@ -1670,6 +1685,26 @@ a.stat-card:hover {
     top: 2%;
     left: 22%;
     width: 98%;
+  }
+
+  .checklist {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 440px);
+    align-items: center;
+    justify-items: stretch;
+    column-gap: 28px;
+  }
+
+  .checklist-copy {
+    justify-self: end;
+  }
+
+  .checklist-gift {
+    margin: 0;
+  }
+
+  .checklist-gift img {
+    width: 100%;
+    max-width: none;
   }
 
   .regions,
