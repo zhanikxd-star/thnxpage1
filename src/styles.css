@@ -386,27 +386,19 @@ a:hover {
   align-self: center;
 }
 
-.hero-points {
-  display: grid;
-  gap: 12px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.hero-points li {
-  display: grid;
-  grid-template-columns: 20px minmax(0, 1fr);
-  gap: 10px;
-  align-items: start;
-  color: var(--text);
-  font-size: clamp(14px, 1.7vh, 16px);
-  line-height: 1.35;
-}
-
-.hero-check {
+.hero-arrow {
+  display: block;
+  width: 96px;
+  height: auto;
+  margin: 0 0 10px -8px;
   color: var(--accent);
-  margin-top: 1px;
+}
+
+.hero-pitch {
+  color: var(--ink);
+  font-size: clamp(17px, 2.2vh, 20px);
+  font-weight: 500;
+  line-height: 1.4;
 }
 
 .vsl {
@@ -1702,10 +1694,6 @@ a.stat-card:hover {
     margin-top: 8px;
   }
 
-  .hero-points {
-    gap: 8px;
-  }
-
   .hero-cta {
     justify-self: stretch;
   }
@@ -1718,9 +1706,31 @@ a.stat-card:hover {
     font-size: 18px;
   }
 
-  .lede,
-  .hero-points li {
+  .lede {
     font-size: 13px;
+  }
+
+  .hero-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: min(100%, 520px);
+    margin-inline: auto;
+  }
+
+  .hero-arrow {
+    flex: none;
+    width: 44px;
+    margin: 0;
+    transform: rotate(90deg) scaleY(-1);
+  }
+
+  .hero-arrow path {
+    stroke-width: 6;
+  }
+
+  .hero-pitch {
+    font-size: 15px;
   }
 
   .vsl {
@@ -1770,7 +1780,7 @@ a.stat-card:hover {
     font-size: 16px;
   }
 
-  .hero-points li {
+  .hero-pitch {
     font-size: 15px;
   }
 
@@ -2051,7 +2061,17 @@ a.stat-card:hover {
     margin-top: 10px;
   }
 
-  .hero-points li {
+  .hero-info {
+    display: block;
+  }
+
+  .hero-arrow {
+    width: 64px;
+    margin: 0 0 8px -6px;
+    transform: none;
+  }
+
+  .hero-pitch {
     font-size: 14px;
   }
 }
@@ -2082,7 +2102,7 @@ a.stat-card:hover {
     row-gap: 16px;
   }
 
-  .hero-points li {
+  .hero-pitch {
     font-size: 18px;
   }
 }
@@ -2156,7 +2176,7 @@ a.stat-card:hover {
     font-size: 12px;
   }
 
-  .hero-points li {
+  .hero-pitch {
     font-size: 14px;
   }
 
