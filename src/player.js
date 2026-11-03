@@ -57,8 +57,8 @@ function paint(root, player, playing) {
   root.classList.toggle("is-started", playing || current > 0.35);
 }
 
-export function mountExamplePlayer(root, { onProgress, onEnded, onFail } = {}) {
-  if (!root) return;
+export function mountExamplePlayer(root, { onProgress, onEnded, onFail, isLocked, onLocked } = {}) {
+  if (!root) return null;
   const videoId = root.dataset.videoId;
   const play = root.querySelector("[data-player-play]");
   const mute = root.querySelector("[data-player-mute]");
@@ -101,8 +101,14 @@ export function mountExamplePlayer(root, { onProgress, onEnded, onFail } = {}) {
     if (state === window.YT.PlayerState.ENDED) onEnded?.();
   }
 
+  function locked() {
+    if (!isLocked?.()) return false;
+    onLocked?.();
+    return true;
+  }
+
   function togglePlay() {
-    if (!player?.getPlayerState) return;
+    if (locked() || !player?.getPlayerState) return;
     const playing = player.getPlayerState() === window.YT.PlayerState.PLAYING;
     if (playing) player.pauseVideo();
     else player.playVideo();
@@ -127,7 +133,7 @@ export function mountExamplePlayer(root, { onProgress, onEnded, onFail } = {}) {
 
   fullscreen?.addEventListener("click", () => {
     const request = root.requestFullscreen?.bind(root);
-    if (!request) return;
+    if (locked() || !request) return;
     if (document.fullscreenElement === root) document.exitFullscreen?.();
     else request().catch(() => {});
   });
@@ -194,4 +200,10 @@ export function mountExamplePlayer(root, { onProgress, onEnded, onFail } = {}) {
       }
       onFail?.();
     });
+
+  return {
+    play() {
+      player?.playVideo?.();
+    },
+  };
 }

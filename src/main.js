@@ -7,12 +7,33 @@ import "./styles.css";
 import { mountExamplePlayer } from "./player.js";
 import { createVideoGate } from "./video-gate.js";
 
+const ACCESS_KEY = "vls-video-access";
+const root = document.documentElement;
+const accessDialog = document.querySelector("#access-dialog");
+
 const videoGate = createVideoGate();
-mountExamplePlayer(document.querySelector(".player"), {
+const examplePlayer = mountExamplePlayer(document.querySelector(".player"), {
   onProgress: (watched, duration) => videoGate.progress(watched, duration),
   onEnded: () => videoGate.unlock(),
   onFail: () => videoGate.unlock({ keep: false }),
+  isLocked: () => root.classList.contains("is-video-locked"),
+  onLocked: () => openDialog(accessDialog),
 });
+
+function grantVideoAccess(form) {
+  try {
+    localStorage.setItem(ACCESS_KEY, "1");
+  } catch (error) {}
+  root.classList.remove("is-video-locked");
+  ["name", "phone"].forEach((name) => {
+    const value = form.elements.namedItem(name)?.value;
+    document.querySelectorAll(`#consult-form [name='${name}'], #consult-dialog-form [name='${name}']`).forEach((field) => {
+      if (!field.value) field.value = value;
+    });
+  });
+  dismissDialog(accessDialog);
+  examplePlayer?.play();
+}
 
 const header = document.querySelector(".header");
 const navToggle = document.querySelector("#nav-toggle");
@@ -53,7 +74,7 @@ faqItems.forEach((item) => {
 
 const PHONE_MIN_DIGITS = 6;
 
-function bindConsultForm(form) {
+function bindConsultForm(form, { onSuccess } = {}) {
   if (!form) return;
   const panel = form.closest(".consult-panel");
   const success = panel?.querySelector(".form-success");
@@ -111,7 +132,7 @@ function bindConsultForm(form) {
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
-    if (!success || !errorSummary) return;
+    if ((!success && !onSuccess) || !errorSummary) return;
 
     const fields = ["name", "phone", "grade", "country"]
       .map((name) => form.elements.namedItem(name))
@@ -131,6 +152,10 @@ function bindConsultForm(form) {
     }
 
     clearFormErrors();
+    if (onSuccess) {
+      onSuccess(form);
+      return;
+    }
     form.hidden = true;
     success.hidden = false;
     success.focus();
@@ -139,40 +164,46 @@ function bindConsultForm(form) {
 
 bindConsultForm(document.querySelector("#consult-form"));
 bindConsultForm(document.querySelector("#consult-dialog-form"));
+bindConsultForm(document.querySelector("#access-form"), { onSuccess: grantVideoAccess });
 
 const consultDialog = document.querySelector("#consult-dialog");
 
-function openConsultDialog() {
-  if (!consultDialog || consultDialog.open) return;
+function openDialog(dialog) {
+  if (!dialog || dialog.open) return;
   document.body.classList.add("dialog-lock");
-  consultDialog.showModal();
-  const name = consultDialog.querySelector("input[name='name']");
-  const success = consultDialog.querySelector(".form-success");
+  dialog.showModal();
+  const name = dialog.querySelector("input[name='name']");
+  const success = dialog.querySelector(".form-success");
   if (name && !name.closest("form")?.hidden) name.focus();
   else success?.focus();
 }
 
-function dismissConsultDialog() {
-  if (!consultDialog?.open) return;
+function dismissDialog(dialog) {
+  if (!dialog?.open) return;
   // close() внутри click по кнопке в диалоге не шлёт событие close.
   // Откладываем вызов, чтобы снять блокировку прокрутки в обработчике close.
   queueMicrotask(() => {
-    if (consultDialog.open) consultDialog.close();
+    if (dialog.open) dialog.close();
   });
 }
 
-consultDialog?.addEventListener("close", () => {
-  document.body.classList.remove("dialog-lock");
+[consultDialog, accessDialog].forEach((dialog) => {
+  if (!dialog) return;
+  dialog.addEventListener("close", () => {
+    document.body.classList.remove("dialog-lock");
+  });
+  dialog.querySelector("[data-close-consult], [data-close-dialog]")?.addEventListener("click", () => dismissDialog(dialog));
+  dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) dismissDialog(dialog);
+  });
 });
 
 document.querySelectorAll("[data-open-consult]").forEach((button) => {
-  button.addEventListener("click", openConsultDialog);
+  button.addEventListener("click", () => openDialog(consultDialog));
 });
 
-consultDialog?.querySelector("[data-close-consult]")?.addEventListener("click", dismissConsultDialog);
-
-consultDialog?.addEventListener("click", (event) => {
-  if (event.target === consultDialog) dismissConsultDialog();
+document.querySelectorAll("[data-open-access]").forEach((button) => {
+  button.addEventListener("click", () => openDialog(accessDialog));
 });
 
 const selectionTimer = document.querySelector("[data-selection-timer]");
