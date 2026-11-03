@@ -1,4 +1,4 @@
-import { formatClock, nextPlaybackHead } from "./playback.js";
+import { displayProgress, formatClock, nextPlaybackHead } from "./playback.js";
 
 const POLL_MS = 250;
 const CORRECT_LOCK_MS = 700;
@@ -52,15 +52,12 @@ function paint(root, player, playing) {
   }
 
   if (time) time.textContent = formatClock(current);
-  if (fill) {
-    const ratio = duration > 0 ? Math.min(1, current / duration) : 0;
-    fill.style.width = `${ratio * 100}%`;
-  }
+  if (fill) fill.style.width = `${displayProgress(current, duration) * 100}%`;
 
   root.classList.toggle("is-started", playing || current > 0.35);
 }
 
-export function mountExamplePlayer(root) {
+export function mountExamplePlayer(root, { onProgress, onEnded, onFail } = {}) {
   if (!root) return;
   const videoId = root.dataset.videoId;
   const play = root.querySelector("[data-player-play]");
@@ -100,6 +97,8 @@ export function mountExamplePlayer(root) {
       head = step.head;
     }
     paint(root, player, playing);
+    onProgress?.(head, player.getDuration?.() || 0);
+    if (state === window.YT.PlayerState.ENDED) onEnded?.();
   }
 
   function togglePlay() {
@@ -183,6 +182,7 @@ export function mountExamplePlayer(root) {
                 resolve();
               },
               onStateChange: () => guard(),
+              onError: () => onFail?.(),
             },
           });
         }),
@@ -192,5 +192,6 @@ export function mountExamplePlayer(root) {
         status.hidden = false;
         status.textContent = "Пример ролика сейчас не загрузился. Перемотка в плеере всё равно отключена.";
       }
+      onFail?.();
     });
 }

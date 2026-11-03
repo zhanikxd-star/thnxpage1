@@ -10,6 +10,16 @@
     />
     <title>Ролик покажет, что решает поступление — impact admissions</title>
     <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <!-- Ставит блокировку до отрисовки, чтобы блоки после ролика не мелькали. Логика в src/video-gate.js. -->
+    <script>
+      (function () {
+        var open = false;
+        try {
+          open = localStorage.getItem("vls-video-unlocked") === "1";
+        } catch (error) {}
+        if (!open && !/[?&]all(=|&|$)/.test(location.search)) document.documentElement.classList.add("is-gated");
+      })();
+    </script>
   </head>
   <body>
     <a class="skip" href="#main">К содержанию</a>

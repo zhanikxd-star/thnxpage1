@@ -15,7 +15,7 @@ function navHeight() {
 }
 
 function blocks() {
-  const nodes = [...document.querySelectorAll("main > section")];
+  const nodes = [...document.querySelectorAll("main > section")].filter((el) => !el.hidden);
   const footer = document.querySelector("footer");
   if (footer) nodes.push(footer);
   return nodes;

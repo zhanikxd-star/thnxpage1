@@ -6,8 +6,14 @@ import "@fontsource/onest/600.css";
 import "./styles.css";
 import { mountExamplePlayer } from "./player.js";
 import { mountSectionScroll } from "./section-scroll.js";
+import { createVideoGate } from "./video-gate.js";
 
-mountExamplePlayer(document.querySelector(".player"));
+const videoGate = createVideoGate();
+mountExamplePlayer(document.querySelector(".player"), {
+  onProgress: (watched, duration) => videoGate.progress(watched, duration),
+  onEnded: () => videoGate.unlock(),
+  onFail: () => videoGate.unlock({ keep: false }),
+});
 mountSectionScroll();
 
 const header = document.querySelector(".header");

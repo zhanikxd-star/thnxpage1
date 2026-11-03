@@ -10,6 +10,20 @@ export function nextPlaybackHead(head, current, playing, maxStep = SEEK_LIMIT_SE
   return { head: current, seekBack: false };
 }
 
+// Полоса прогресса нелинейная: первые FAST_SECONDS заполняют FAST_SHARE шкалы,
+// остаток ролика растянут на оставшуюся часть. Время на табло остаётся настоящим.
+export const FAST_SECONDS = 30;
+export const FAST_SHARE = 0.4;
+
+export function displayProgress(current, duration) {
+  if (!Number.isFinite(current) || current <= 0) return 0;
+  if (!Number.isFinite(duration) || duration <= 0) return 0;
+  if (current >= duration) return 1;
+  if (duration <= FAST_SECONDS) return current / duration;
+  if (current <= FAST_SECONDS) return FAST_SHARE * (current / FAST_SECONDS);
+  return FAST_SHARE + (1 - FAST_SHARE) * ((current - FAST_SECONDS) / (duration - FAST_SECONDS));
+}
+
 export function formatClock(seconds) {
   if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
   const whole = Math.floor(seconds);
