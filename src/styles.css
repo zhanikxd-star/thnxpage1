@@ -626,8 +626,34 @@ html.is-video-locked .player-lock:hover {
   background: #fff;
 }
 
+.player-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  min-height: 40px;
+  padding: 0;
+}
+
+.player-bar .player-btn.player-icon {
+  padding: 0;
+}
+
+.player-icon svg {
+  grid-area: 1 / 1;
+}
+
+.player-icon .icon-on,
+.player-icon[aria-pressed="true"] .icon-off {
+  display: none;
+}
+
+.player-icon[aria-pressed="true"] .icon-on {
+  display: block;
+}
+
 .player-speed {
   min-width: 52px;
+  min-height: 40px;
   font-variant-numeric: tabular-nums;
 }
 
@@ -2280,46 +2306,6 @@ a.stat-card:hover {
 
   .hero-cta {
     margin-top: 16px;
-  }
-}
-
-@media (max-width: 480px) {
-  .player-bar {
-    flex-wrap: wrap;
-    row-gap: 12px;
-    column-gap: 6px;
-  }
-
-  .player-track {
-    order: -1;
-    flex: 1 0 100%;
-  }
-
-  .player-time {
-    margin-right: auto;
-  }
-
-  .player-bar .player-btn {
-    padding: 6px 8px;
-  }
-
-  .player-speed {
-    min-width: 42px;
-  }
-}
-
-@media (max-width: 380px) {
-  .player-bar {
-    column-gap: 4px;
-  }
-
-  .player-bar .player-btn {
-    padding: 6px 7px;
-    font-size: 12px;
-  }
-
-  .player-speed {
-    min-width: 38px;
   }
 }
 

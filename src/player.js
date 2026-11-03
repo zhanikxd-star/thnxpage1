@@ -41,15 +41,14 @@ function paint(root, player, playing) {
   const current = player?.getCurrentTime?.() || 0;
 
   if (play) {
-    play.textContent = playing ? "Пауза" : "Смотреть";
     play.setAttribute("aria-pressed", playing ? "true" : "false");
-    play.setAttribute("aria-label", playing ? "Пауза" : "Смотреть пример");
+    play.setAttribute("aria-label", playing ? "Пауза" : "Смотреть");
   }
 
   if (mute && player?.isMuted) {
     const muted = player.isMuted();
-    mute.textContent = muted ? "Без звука" : "Звук";
     mute.setAttribute("aria-pressed", muted ? "true" : "false");
+    mute.setAttribute("aria-label", muted ? "Включить звук" : "Выключить звук");
   }
 
   if (time) time.textContent = formatClock(current);
@@ -150,7 +149,6 @@ export function mountExamplePlayer(root, { onProgress, onEnded, onFail, isLocked
   function paintFullscreen() {
     if (!fullscreen) return;
     const open = document.fullscreenElement === root;
-    fullscreen.textContent = open ? "Свернуть" : "На весь экран";
     fullscreen.setAttribute("aria-pressed", open ? "true" : "false");
     fullscreen.setAttribute("aria-label", open ? "Выйти из полного экрана" : "Открыть видео на весь экран");
   }
