@@ -626,6 +626,11 @@ html.is-video-locked .player-lock:hover {
   background: #fff;
 }
 
+.player-speed {
+  min-width: 52px;
+  font-variant-numeric: tabular-nums;
+}
+
 .player-btn-quiet {
   background: transparent;
   color: var(--ink);
@@ -2274,6 +2279,45 @@ a.stat-card:hover {
 
   .hero-cta {
     margin-top: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .player-bar {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .player-track {
+    order: -1;
+    flex: 1 0 100%;
+  }
+
+  .player-time {
+    margin-right: auto;
+  }
+
+  .player-bar .player-btn {
+    padding: 6px 8px;
+  }
+
+  .player-speed {
+    min-width: 42px;
+  }
+}
+
+@media (max-width: 380px) {
+  .player-bar {
+    column-gap: 4px;
+  }
+
+  .player-bar .player-btn {
+    padding: 6px 7px;
+    font-size: 12px;
+  }
+
+  .player-speed {
+    min-width: 38px;
   }
 }
 

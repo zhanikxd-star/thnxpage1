@@ -1,7 +1,8 @@
-import { displayProgress, formatClock, nextPlaybackHead } from "./playback.js";
+import { SEEK_LIMIT_SECONDS, displayProgress, formatClock, nextPlaybackHead } from "./playback.js";
 
 const POLL_MS = 250;
 const CORRECT_LOCK_MS = 700;
+const SPEEDS = [1, 1.25, 1.5, 2];
 
 function loadYouTubeApi() {
   return new Promise((resolve, reject) => {
@@ -63,9 +64,11 @@ export function mountExamplePlayer(root, { onProgress, onEnded, onFail, isLocked
   const play = root.querySelector("[data-player-play]");
   const mute = root.querySelector("[data-player-mute]");
   const fullscreen = root.querySelector("[data-player-fullscreen]");
+  const speed = root.querySelector("[data-player-speed]");
   const surface = root.querySelector("[data-player-surface]");
   const status = root.querySelector("[data-player-status]");
   let head = 0;
+  let rate = 1;
   let correcting = false;
   let player = null;
   let poll = 0;
@@ -75,7 +78,7 @@ export function mountExamplePlayer(root, { onProgress, onEnded, onFail, isLocked
     const state = player.getPlayerState?.();
     const playing = state === window.YT.PlayerState.PLAYING;
     const current = player.getCurrentTime();
-    const step = nextPlaybackHead(head, current, playing);
+    const step = nextPlaybackHead(head, current, playing, SEEK_LIMIT_SECONDS * rate);
     if (step.seekBack) {
       if (!correcting) {
         correcting = true;
@@ -122,6 +125,27 @@ export function mountExamplePlayer(root, { onProgress, onEnded, onFail, isLocked
     else player.mute();
     paint(root, player, player.getPlayerState() === window.YT.PlayerState.PLAYING);
   });
+
+  function paintSpeed() {
+    if (!speed) return;
+    const label = `${String(rate).replace(".", ",")}×`;
+    speed.textContent = label;
+    speed.setAttribute("aria-label", `Скорость воспроизведения ${label}`);
+  }
+
+  function applySpeed() {
+    player?.setPlaybackRate?.(rate);
+  }
+
+  speed?.addEventListener("click", () => {
+    const available = player?.getAvailablePlaybackRates?.() || SPEEDS;
+    const options = SPEEDS.filter((value) => available.includes(value));
+    const list = options.length ? options : [1];
+    rate = list[(list.indexOf(rate) + 1) % list.length];
+    applySpeed();
+    paintSpeed();
+  });
+  paintSpeed();
 
   function paintFullscreen() {
     if (!fullscreen) return;
@@ -183,6 +207,7 @@ export function mountExamplePlayer(root, { onProgress, onEnded, onFail, isLocked
                 const frame = player.getIframe?.();
                 if (frame) frame.setAttribute("tabindex", "-1");
                 root.ytPlayer = player;
+                applySpeed();
                 paint(root, player, false);
                 poll = window.setInterval(guard, POLL_MS);
                 resolve();
