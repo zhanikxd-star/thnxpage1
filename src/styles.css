@@ -2087,6 +2087,367 @@ a.stat-card:hover {
   }
 }
 
+@media (max-width: 599px) {
+  :root {
+    --gutter: 16px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  h3 {
+    font-size: 17px;
+  }
+
+  .section,
+  .consult {
+    padding: 40px 0;
+  }
+
+  .section-head {
+    margin-bottom: 18px;
+  }
+
+  .section-head p {
+    margin-top: 8px;
+    font-size: 15px;
+  }
+
+  .hero {
+    min-height: 0;
+    padding: 12px 0 20px;
+  }
+
+  .hero-stack {
+    height: auto;
+    padding-top: 0;
+  }
+
+  .hero-stack h1 {
+    font-size: 20px;
+  }
+
+  .lede {
+    font-size: 14px;
+  }
+
+  .hero-split {
+    margin-top: 12px;
+    row-gap: 12px;
+  }
+
+  .vsl {
+    width: 100%;
+  }
+
+  .player-bar {
+    flex-wrap: nowrap;
+    gap: 6px;
+    padding: 8px 8px 0;
+  }
+
+  .player-btn {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  .player-time {
+    font-size: 12px;
+  }
+
+  .hero-points li {
+    font-size: 14px;
+  }
+
+  .hero-cta {
+    min-height: 48px;
+    font-size: 15px;
+  }
+
+  .uni-strip,
+  .hero .uni-strip {
+    margin-top: 18px;
+  }
+
+  .marks {
+    gap: 36px;
+    padding-right: 36px;
+  }
+
+  .hero .mark-harvard,
+  .hero .mark-toronto,
+  .mark-harvard,
+  .mark-toronto {
+    font-size: 32px;
+  }
+
+  .mark-stanford,
+  .mark-nyu {
+    font-size: 40px;
+  }
+
+  .mark-oxford {
+    font-size: 36px;
+  }
+
+  .mark-mit {
+    font-size: 31px;
+  }
+
+  .mark-ucl,
+  .mark-kaist,
+  .mark-hkust {
+    font-size: 27px;
+  }
+
+  .mark-delft,
+  .mark-munich {
+    font-size: 28px;
+  }
+
+  .misses,
+  .cards,
+  .program {
+    gap: 8px;
+  }
+
+  .misses li,
+  .cards li,
+  .program section {
+    padding: 14px 16px;
+  }
+
+  .misses h3 {
+    margin-bottom: 4px;
+  }
+
+  .misses p,
+  .cards p {
+    font-size: 15px;
+  }
+
+  .misses-note {
+    margin-top: 14px;
+    font-size: 15px;
+  }
+
+  .misses-student {
+    margin-top: 16px;
+  }
+
+  .misses-student img {
+    width: auto;
+    max-height: 300px;
+  }
+
+  .checklist-card {
+    gap: 16px;
+    padding: 18px 16px;
+  }
+
+  .checklist-points {
+    gap: 8px;
+  }
+
+  .checklist-points li {
+    font-size: 15px;
+  }
+
+  .checklist-card .btn {
+    justify-self: stretch;
+  }
+
+  .checklist-gift {
+    margin-top: 16px;
+  }
+
+  .checklist-gift img {
+    width: min(100%, 220px);
+  }
+
+  .stat-bento {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .stat-reach,
+  .stat-facts,
+  .stat-exams {
+    grid-column: 1 / -1;
+  }
+
+  .stat-reach {
+    min-height: 190px;
+    padding: 20px;
+  }
+
+  .stat-reach-num {
+    font-size: 44px;
+  }
+
+  .stat-globe {
+    top: 20%;
+    left: 46%;
+    width: 64%;
+  }
+
+  .stat-facts {
+    padding: 4px 18px;
+  }
+
+  .stat-facts > div {
+    padding: 12px 0;
+  }
+
+  .stat-fact-num {
+    font-size: 22px;
+  }
+
+  .stat-tile {
+    min-height: 0;
+    padding: 16px;
+  }
+
+  .stat-tile-num,
+  .stat-exam-row strong {
+    font-size: 24px;
+  }
+
+  .stat-tile-label {
+    margin-top: 10px;
+    padding-right: 0;
+    font-size: 14px;
+  }
+
+  .stat-arrow {
+    top: 12px;
+    right: 12px;
+  }
+
+  .steps h3::before {
+    display: inline;
+    margin: 0 8px 0 0;
+  }
+
+  .steps h3 {
+    margin-bottom: 4px;
+  }
+
+  .team-count {
+    padding-top: 8px;
+  }
+
+  .selection-grid {
+    gap: 20px;
+  }
+
+  .selection-lead {
+    margin-top: 10px;
+    font-size: 17px;
+  }
+
+  .selection-offer {
+    margin-top: 12px;
+    font-size: 16px;
+  }
+
+  .selection-panel {
+    padding: 18px 16px;
+    border-radius: 20px;
+  }
+
+  .selection-panel .btn {
+    margin-top: 16px;
+  }
+
+  .cases {
+    display: flex;
+    gap: 10px;
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 0 var(--gutter) 6px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+
+  .cases::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cases > li {
+    flex: 0 0 86%;
+    scroll-snap-align: start;
+  }
+
+  .case-photo,
+  .case-photo-wide {
+    aspect-ratio: 16 / 11;
+  }
+
+  .case-with-photo {
+    padding-bottom: 14px;
+  }
+
+  .case-with-photo header,
+  .case-with-photo dl,
+  .case-path-title {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .case-with-photo header {
+    padding-top: 12px;
+  }
+
+  .case-path-title {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+
+  .cases dl {
+    margin-top: 8px;
+  }
+
+  .cases dd {
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .faq summary {
+    padding: 14px 28px 14px 0;
+    font-size: 15px;
+  }
+
+  .faq details p {
+    margin-bottom: 14px;
+    font-size: 15px;
+  }
+
+  .consult-grid {
+    gap: 20px;
+  }
+
+  .consult-line {
+    margin-top: 8px;
+    font-size: 16px;
+  }
+
+  .consult-panel {
+    padding: 18px 16px;
+  }
+
+  .footer {
+    padding: 28px 0 20px;
+  }
+
+  .legal {
+    margin-top: 18px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
