@@ -390,7 +390,7 @@ a:hover {
   display: block;
   width: 96px;
   height: auto;
-  margin: 0 0 10px -8px;
+  margin: 14px 0 0 -8px;
   color: var(--accent);
 }
 
@@ -2067,7 +2067,7 @@ a.stat-card:hover {
 
   .hero-arrow {
     width: 64px;
-    margin: 0 0 8px -6px;
+    margin: 10px 0 0 -6px;
     transform: none;
   }
 
