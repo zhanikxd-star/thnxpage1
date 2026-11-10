@@ -195,7 +195,25 @@ function lead_validate(array $input): array
         if ($value !== '') $utm[$key] = $value;
     }
 
-    return [$errors, compact('form', 'name', 'phone', 'audience', 'grade', 'english', 'grades', 'placement', 'page', 'referrer', 'utm')];
+    $video_seconds = lead_video_seconds($input['video_seconds'] ?? null);
+
+    return [$errors, compact('form', 'name', 'phone', 'audience', 'grade', 'english', 'grades', 'placement', 'page', 'referrer', 'utm', 'video_seconds')];
+}
+
+function lead_video_seconds($value): ?float
+{
+    if ($value === null || $value === '') return null;
+    if (!is_numeric($value)) return null;
+    $seconds = (float) $value;
+    if ($seconds < 0 || $seconds > 86400) return null;
+    return $seconds;
+}
+
+function lead_format_video_position(?float $seconds): string
+{
+    if ($seconds === null) return 'видео ещё не смотрели';
+    $whole = (int) floor($seconds);
+    return sprintf('%02d:%02d (%d с)', intdiv($whole, 60), $whole % 60, $whole);
 }
 
 function lead_note(array $lead, array $config): string
@@ -213,6 +231,7 @@ function lead_note(array $lead, array $config): string
     if ($lead['grade'] !== '') $lines[] = 'Класс: ' . $lead['grade'];
     if ($lead['english'] !== '') $lines[] = 'Английский: ' . LEAD_ENGLISH[$lead['english']];
     if ($lead['grades'] !== '') $lines[] = 'Оценки в школе: ' . LEAD_SCHOOL_MARKS[$lead['grades']];
+    $lines[] = 'Позиция в видео: ' . lead_format_video_position($lead['video_seconds'] ?? null);
     if ($lead['page'] !== '') $lines[] = 'Страница: ' . $lead['page'];
     if ($lead['referrer'] !== '') $lines[] = 'Откуда пришёл: ' . $lead['referrer'];
     foreach ($lead['utm'] as $key => $value) $lines[] = $key . ': ' . $value;

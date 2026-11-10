@@ -46,9 +46,20 @@ function fieldValue(form, name) {
   return field && "value" in field ? field.value : "";
 }
 
+function currentVideoSeconds() {
+  const seconds = examplePlayer?.getCurrentTime?.();
+  return typeof seconds === "number" && Number.isFinite(seconds) && seconds >= 0 ? seconds : null;
+}
+
+function leadFields(fields) {
+  const videoSeconds = currentVideoSeconds();
+  if (videoSeconds === null) return fields;
+  return { ...fields, video_seconds: videoSeconds };
+}
+
 function grantVideoAccess(form) {
   const audience = fieldValue(form, "audience");
-  sendLead({
+  sendLead(leadFields({
     form: "video",
     audience,
     grade: fieldValue(form, "grade"),
@@ -57,7 +68,7 @@ function grantVideoAccess(form) {
     name: fieldValue(form, "name"),
     phone: fieldValue(form, "phone"),
     website: fieldValue(form, "website"),
-  }).catch(() => {});
+  })).catch(() => {});
   try {
     localStorage.setItem(ACCESS_KEY, "1");
     if (audience) localStorage.setItem(AUDIENCE_KEY, audience);
@@ -340,14 +351,14 @@ function bindConsultForm(form, { onSuccess } = {}) {
       submitButton.textContent = "Отправляем…";
     }
     try {
-      await sendLead({
+      await sendLead(leadFields({
         form: "consult",
         placement: form.id === "consult-dialog-form" ? "popup" : "page",
         name: fieldValue(form, "name"),
         phone: fieldValue(form, "phone"),
         grade: fieldValue(form, "grade"),
         website: fieldValue(form, "website"),
-      });
+      }));
       form.hidden = true;
       success.hidden = false;
       success.focus();

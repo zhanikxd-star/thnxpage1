@@ -274,5 +274,15 @@ export function mountExamplePlayer(root, { videoId: initialVideoId, onProgress, 
       if (player?.loadVideoById) begin();
       else pendingStart = true;
     },
+    getCurrentTime() {
+      try {
+        if (!player?.getCurrentTime) return null;
+        const seconds = player.getCurrentTime();
+        if (typeof seconds !== "number" || !Number.isFinite(seconds) || seconds < 0) return null;
+        return seconds;
+      } catch (error) {
+        return null;
+      }
+    },
   };
 }
