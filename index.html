@@ -135,7 +135,7 @@
                 </div>
 
                 <div class="vsl-step" data-step="grade" data-field="grade" role="group" aria-labelledby="q-grade" hidden>
-                  <p class="vsl-question" id="q-grade">В каком классе ученик?</p>
+                  <p class="vsl-question" id="q-grade" data-say-parent="В каком классе ваш ребёнок?" data-say-student="В каком ты классе?">В каком классе ваш ребёнок?</p>
                   <div class="vsl-options vsl-options-4">
                     <button class="vsl-option" type="button" data-value="8 класс" aria-pressed="false">8 класс</button>
                     <button class="vsl-option" type="button" data-value="9 класс" aria-pressed="false">9 класс</button>
@@ -146,29 +146,29 @@
                 </div>
 
                 <div class="vsl-step" data-step="english" data-field="english" role="group" aria-labelledby="q-english" hidden>
-                  <p class="vsl-question" id="q-english">Какой английский у ребёнка или у вас?</p>
+                  <p class="vsl-question" id="q-english" data-say-parent="Какой английский у вашего ребёнка?" data-say-student="Какой у тебя английский?">Какой английский у вашего ребёнка?</p>
                   <div class="vsl-options vsl-options-2">
-                    <button class="vsl-option" type="button" data-value="basic" aria-pressed="false">Знаю основы</button>
-                    <button class="vsl-option" type="button" data-value="conversation" aria-pressed="false">Могу поддержать разговор</button>
-                    <button class="vsl-option" type="button" data-value="movies" aria-pressed="false">Могу смотреть фильмы</button>
-                    <button class="vsl-option" type="button" data-value="fluent" aria-pressed="false">Свободно владею</button>
+                    <button class="vsl-option" type="button" data-value="basic" aria-pressed="false" data-say-parent="Знает основы" data-say-student="Знаю основы">Знает основы</button>
+                    <button class="vsl-option" type="button" data-value="conversation" aria-pressed="false" data-say-parent="Может поддержать разговор" data-say-student="Могу поддержать разговор">Может поддержать разговор</button>
+                    <button class="vsl-option" type="button" data-value="movies" aria-pressed="false" data-say-parent="Может смотреть фильмы" data-say-student="Могу смотреть фильмы">Может смотреть фильмы</button>
+                    <button class="vsl-option" type="button" data-value="fluent" aria-pressed="false" data-say-parent="Свободно владеет" data-say-student="Свободно владею">Свободно владеет</button>
                   </div>
                   <input type="hidden" name="english" />
                 </div>
 
                 <div class="vsl-step" data-step="grades" data-field="grades" role="group" aria-labelledby="q-grades" hidden>
-                  <p class="vsl-question" id="q-grades">Оценки в школе</p>
+                  <p class="vsl-question" id="q-grades" data-say-parent="Как ваш ребёнок учится в школе?" data-say-student="Как ты учишься?">Как ваш ребёнок учится в школе?</p>
                   <div class="vsl-options vsl-options-2">
-                    <button class="vsl-option" type="button" data-value="excellent" aria-pressed="false">Отличник</button>
-                    <button class="vsl-option" type="button" data-value="good" aria-pressed="false">Хорошист</button>
-                    <button class="vsl-option" type="button" data-value="average" aria-pressed="false">Троечник</button>
-                    <button class="vsl-option" type="button" data-value="below" aria-pressed="false">Ниже тройки</button>
+                    <button class="vsl-option" type="button" data-value="excellent" aria-pressed="false" data-say-parent="Отличник" data-say-student="Я отличник">Отличник</button>
+                    <button class="vsl-option" type="button" data-value="good" aria-pressed="false" data-say-parent="Хорошист" data-say-student="Я хорошист">Хорошист</button>
+                    <button class="vsl-option" type="button" data-value="average" aria-pressed="false" data-say-parent="Троечник" data-say-student="Я троечник">Троечник</button>
+                    <button class="vsl-option" type="button" data-value="below" aria-pressed="false" data-say-parent="Ниже тройки" data-say-student="Ниже тройки">Ниже тройки</button>
                   </div>
                   <input type="hidden" name="grades" />
                 </div>
 
-                <div class="vsl-step" data-step="name" hidden>
-                  <label class="vsl-question" for="access-name">ФИО</label>
+                <div class="vsl-step" data-step="name" data-error-parent="Укажите ФИО" data-error-student="Укажи ФИО" hidden>
+                  <label class="vsl-question" for="access-name" data-say-parent="Ваше ФИО" data-say-student="Твоё ФИО">Ваше ФИО</label>
                   <div class="vsl-input">
                     <input id="access-name" name="name" type="text" autocomplete="name" enterkeyhint="next" />
                     <button class="vsl-input-go" type="submit" aria-label="Дальше"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg></button>
@@ -176,15 +176,15 @@
                   <small class="vsl-error" id="access-error-name" hidden></small>
                 </div>
 
-                <div class="vsl-step" data-step="phone" hidden>
-                  <label class="vsl-question" for="access-phone">Телефон</label>
+                <div class="vsl-step" data-step="phone" data-error-parent="Укажите телефон" data-error-student="Укажи телефон" hidden>
+                  <label class="vsl-question" for="access-phone" data-say-parent="Ваш телефон" data-say-student="Твой телефон">Ваш телефон</label>
                   <div class="vsl-input">
                     <input id="access-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" enterkeyhint="go" />
                   </div>
                   <small class="vsl-error" id="access-error-phone" hidden></small>
                   <button class="btn vsl-submit" type="submit">Смотреть видео</button>
                   <p class="consent">
-                    Нажимая кнопку, вы соглашаетесь с <a href="https://impact-admissions.com/privacy">политикой обработки персональных данных</a>.
+                    <span data-say-parent="Нажимая кнопку, вы соглашаетесь с" data-say-student="Нажимая кнопку, ты соглашаешься с">Нажимая кнопку, вы соглашаетесь с</span> <a href="https://impact-admissions.com/privacy">политикой обработки персональных данных</a>.
                   </p>
                 </div>
               </form>

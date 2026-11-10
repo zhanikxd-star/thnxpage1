@@ -73,12 +73,26 @@ function mountVideoSteps(form, { onDone }) {
   let index = 0;
   let moving = false;
 
+  const audience = () => form.elements.namedItem("audience").value;
+
+  function speakTo(who) {
+    const student = who === "student";
+    form.querySelectorAll("[data-say-parent]").forEach((node) => {
+      node.textContent = student ? node.dataset.sayStudent : node.dataset.sayParent;
+    });
+    steps.forEach((step) => {
+      const slot = step.querySelector(".vsl-error");
+      if (slot && !slot.hidden) slot.textContent = student ? step.dataset.errorStudent : step.dataset.errorParent;
+    });
+  }
+
   function problem(step) {
     const kind = step.dataset.step;
-    if (kind === "name" && !form.elements.namedItem("name").value.trim()) return "Укажите ФИО";
+    const message = step.dataset[audience() === "student" ? "errorStudent" : "errorParent"];
+    if (kind === "name" && !form.elements.namedItem("name").value.trim()) return message;
     if (kind === "phone") {
       const value = form.elements.namedItem("phone").value;
-      if (!value.trim() || value.replace(/\D/g, "").length < PHONE_MIN_DIGITS) return "Укажите телефон";
+      if (!value.trim() || value.replace(/\D/g, "").length < PHONE_MIN_DIGITS) return message;
     }
     return "";
   }
@@ -137,6 +151,7 @@ function mountVideoSteps(form, { onDone }) {
     const step = option.closest("[data-step]");
     const field = form.elements.namedItem(step.dataset.field);
     if (field) field.value = option.dataset.value;
+    if (step.dataset.field === "audience") speakTo(option.dataset.value);
     step.querySelectorAll(".vsl-option").forEach((other) => {
       other.setAttribute("aria-pressed", other === option ? "true" : "false");
     });
