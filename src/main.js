@@ -7,6 +7,7 @@ import "./styles.css";
 import { mountExamplePlayer } from "./player.js";
 import { createVideoGate } from "./video-gate.js";
 import { sendLead } from "./lead.js";
+import { track, trackOnce, watchFormStart } from "./pixel.js";
 
 const ACCESS_KEY = "vls-video-access";
 const AUDIENCE_KEY = "vls-video-audience";
@@ -59,6 +60,7 @@ function leadFields(fields) {
 
 function grantVideoAccess(form) {
   const audience = fieldValue(form, "audience");
+  trackOnce("video-start", "InitiateCheckout", { content_name: "video_form" });
   sendLead(leadFields({
     form: "video",
     audience,
@@ -69,6 +71,8 @@ function grantVideoAccess(form) {
     phone: fieldValue(form, "phone"),
     website: fieldValue(form, "website"),
   })).catch(() => {});
+  // Видео открывается без ответа CRM — Lead всё равно, как только форма ушла.
+  track("Lead", { content_name: "video_form" });
   try {
     localStorage.setItem(ACCESS_KEY, "1");
     if (audience) localStorage.setItem(AUDIENCE_KEY, audience);
@@ -213,6 +217,11 @@ function mountVideoSteps(form, { onDone }) {
 }
 
 const accessSteps = mountVideoSteps(accessForm, { onDone: grantVideoAccess });
+watchFormStart(accessForm, {
+  key: "video-start",
+  event: "InitiateCheckout",
+  params: { content_name: "video_form" },
+});
 
 const header = document.querySelector(".header");
 const navToggle = document.querySelector("#nav-toggle");
@@ -359,6 +368,7 @@ function bindConsultForm(form, { onSuccess } = {}) {
         grade: fieldValue(form, "grade"),
         website: fieldValue(form, "website"),
       }));
+      track("Lead", { content_name: "consult_form" });
       form.hidden = true;
       success.hidden = false;
       success.focus();
@@ -377,11 +387,22 @@ function bindConsultForm(form, { onSuccess } = {}) {
 
 bindConsultForm(document.querySelector("#consult-form"));
 bindConsultForm(document.querySelector("#consult-dialog-form"));
+watchFormStart(document.querySelector("#consult-form"), {
+  key: "consult-start",
+  event: "Contact",
+  params: { content_name: "consult_form" },
+});
+watchFormStart(document.querySelector("#consult-dialog-form"), {
+  key: "consult-start",
+  event: "Contact",
+  params: { content_name: "consult_form" },
+});
 
 const consultDialog = document.querySelector("#consult-dialog");
 
 function openDialog(dialog) {
   if (!dialog || dialog.open) return;
+  trackOnce("consult-start", "Contact", { content_name: "consult_form" });
   document.body.classList.add("dialog-lock");
   dialog.showModal();
   const name = dialog.querySelector("input[name='name']");
