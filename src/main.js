@@ -8,11 +8,28 @@ import { mountExamplePlayer } from "./player.js";
 import { createVideoGate } from "./video-gate.js";
 
 const ACCESS_KEY = "vls-video-access";
+const AUDIENCE_KEY = "vls-video-audience";
 const root = document.documentElement;
 const accessDialog = document.querySelector("#access-dialog");
+const playerRoot = document.querySelector(".player");
+
+function videoFor(audience) {
+  if (audience === "student") return playerRoot?.dataset.videoStudent;
+  if (audience === "parent") return playerRoot?.dataset.videoParent;
+  return undefined;
+}
+
+function savedAudience() {
+  try {
+    return localStorage.getItem(AUDIENCE_KEY);
+  } catch (error) {
+    return null;
+  }
+}
 
 const videoGate = createVideoGate();
-const examplePlayer = mountExamplePlayer(document.querySelector(".player"), {
+const examplePlayer = mountExamplePlayer(playerRoot, {
+  videoId: videoFor(savedAudience()),
   onProgress: (watched, duration) => videoGate.progress(watched, duration),
   onEnded: () => videoGate.unlock(),
   onFail: () => videoGate.unlock({ keep: false }),
@@ -21,8 +38,10 @@ const examplePlayer = mountExamplePlayer(document.querySelector(".player"), {
 });
 
 function grantVideoAccess(form) {
+  const audience = form.querySelector("[name='audience']:checked")?.value;
   try {
     localStorage.setItem(ACCESS_KEY, "1");
+    if (audience) localStorage.setItem(AUDIENCE_KEY, audience);
   } catch (error) {}
   root.classList.remove("is-video-locked");
   ["name", "phone"].forEach((name) => {
@@ -32,7 +51,7 @@ function grantVideoAccess(form) {
     });
   });
   dismissDialog(accessDialog);
-  examplePlayer?.play();
+  examplePlayer?.play(videoFor(audience));
 }
 
 const header = document.querySelector(".header");
@@ -114,6 +133,19 @@ function bindConsultForm(form, { onSuccess } = {}) {
     else field.removeAttribute("aria-describedby");
   }
 
+  function validateAudience() {
+    const group = form.querySelector(".audience");
+    if (!group) return null;
+    const message = form.querySelector("[name='audience']:checked") ? "" : "Выберите, кто смотрит";
+    group.setAttribute("aria-invalid", message ? "true" : "false");
+    const slot = fieldError("audience");
+    if (slot) {
+      slot.textContent = message;
+      slot.hidden = !message;
+    }
+    return message ? form.querySelector("[name='audience']") : null;
+  }
+
   function clearFormErrors() {
     if (errorSummary) errorSummary.hidden = true;
     Array.from(form.elements).forEach((field) => {
@@ -125,6 +157,10 @@ function bindConsultForm(form, { onSuccess } = {}) {
   form.addEventListener("input", (event) => {
     const field = event.target;
     if (!(field instanceof HTMLElement) || !field.name || !fieldError(field.name)) return;
+    if (field.name === "audience") {
+      if (form.querySelector(".audience")?.getAttribute("aria-invalid") === "true") validateAudience();
+      return;
+    }
     if (field.getAttribute("aria-invalid") === "true") {
       showFieldError(field, validateField(field));
     }
@@ -138,7 +174,7 @@ function bindConsultForm(form, { onSuccess } = {}) {
       .map((name) => form.elements.namedItem(name))
       .filter((field) => field instanceof HTMLInputElement || field instanceof HTMLSelectElement);
 
-    let firstInvalid = null;
+    let firstInvalid = validateAudience();
     fields.forEach((field) => {
       const message = validateField(field);
       showFieldError(field, message);
@@ -172,7 +208,7 @@ function openDialog(dialog) {
   if (!dialog || dialog.open) return;
   document.body.classList.add("dialog-lock");
   dialog.showModal();
-  const name = dialog.querySelector("input[name='name']");
+  const name = dialog.querySelector("input[name='audience'], input[name='name']");
   const success = dialog.querySelector(".form-success");
   if (name && !name.closest("form")?.hidden) name.focus();
   else success?.focus();

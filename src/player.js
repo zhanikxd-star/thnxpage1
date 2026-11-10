@@ -57,9 +57,9 @@ function paint(root, player, playing) {
   root.classList.toggle("is-started", playing || current > 0.35);
 }
 
-export function mountExamplePlayer(root, { onProgress, onEnded, onFail, isLocked, onLocked } = {}) {
+export function mountExamplePlayer(root, { videoId: initialVideoId, onProgress, onEnded, onFail, isLocked, onLocked } = {}) {
   if (!root) return null;
-  const videoId = root.dataset.videoId;
+  let videoId = initialVideoId || root.dataset.videoId;
   const play = root.querySelector("[data-player-play]");
   const mute = root.querySelector("[data-player-mute]");
   const fullscreen = root.querySelector("[data-player-fullscreen]");
@@ -186,6 +186,7 @@ export function mountExamplePlayer(root, { onProgress, onEnded, onFail, isLocked
     .then(
       (YT) =>
         new Promise((resolve) => {
+          const createdWith = videoId;
           player = new YT.Player("vsl-youtube", {
             videoId,
             host: "https://www.youtube-nocookie.com",
@@ -205,12 +206,16 @@ export function mountExamplePlayer(root, { onProgress, onEnded, onFail, isLocked
                 const frame = player.getIframe?.();
                 if (frame) frame.setAttribute("tabindex", "-1");
                 root.ytPlayer = player;
+                if (videoId !== createdWith) player.cueVideoById({ videoId });
                 applySpeed();
                 paint(root, player, false);
                 poll = window.setInterval(guard, POLL_MS);
                 resolve();
               },
-              onStateChange: () => guard(),
+              onStateChange: () => {
+                if (player.getPlaybackRate?.() !== rate) applySpeed();
+                guard();
+              },
               onError: () => onFail?.(),
             },
           });
@@ -225,7 +230,13 @@ export function mountExamplePlayer(root, { onProgress, onEnded, onFail, isLocked
     });
 
   return {
-    play() {
+    play(nextVideoId) {
+      if (nextVideoId && nextVideoId !== videoId) {
+        videoId = nextVideoId;
+        head = 0;
+        if (player?.loadVideoById) player.loadVideoById({ videoId });
+        return;
+      }
       player?.playVideo?.();
     },
   };

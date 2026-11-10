@@ -79,7 +79,7 @@
           <!-- Пример, не речь основателя. Обложка — присланный кадр, пока ролик не запущен.
                Плеер свой: шкала не кликается, чужая перемотка возвращается назад. -->
           <figure class="vsl">
-            <div class="player" data-video-id="5fZ4j6xsdcI">
+            <div class="player" data-video-id="5fZ4j6xsdcI" data-video-parent="5fZ4j6xsdcI" data-video-student="ye1VrledmJ0">
               <div class="player-stage">
                 <div id="vsl-youtube"></div>
                 <img
@@ -814,6 +814,21 @@
           </div>
 
           <div class="fields">
+            <fieldset class="audience" aria-describedby="access-error-audience">
+              <legend>Кто смотрит</legend>
+              <div class="audience-options">
+                <label>
+                  <input type="radio" name="audience" value="parent" required />
+                  <span>Родитель</span>
+                </label>
+                <label>
+                  <input type="radio" name="audience" value="student" required />
+                  <span>Ученик</span>
+                </label>
+              </div>
+              <small id="access-error-audience" data-error="audience" hidden></small>
+            </fieldset>
+
             <label>
               <span>Имя родителя или ученика</span>
               <input name="name" type="text" autocomplete="name" required />
