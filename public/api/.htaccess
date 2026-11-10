@@ -1,0 +1,19 @@
+Options -Indexes
+
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Cache-Control "no-store"
+</IfModule>
+
+# Открыт только lead.php. Конфиг с токеном сюда класть нельзя: он лежит вне public_html.
+<IfModule mod_authz_core.c>
+  <FilesMatch "^(?!lead\.php$).+">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+  <FilesMatch "^(?!lead\.php$).+">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+</IfModule>

@@ -1,0 +1,19 @@
+{
+  "name": "thnxpage1",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "@fontsource/onest": "^5.2.8",
+    "@fontsource/unbounded": "^5.2.8"
+  }
+}
