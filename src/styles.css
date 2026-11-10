@@ -562,23 +562,58 @@ html.is-video-locked .vsl-gate {
 
 .vsl-form {
   pointer-events: auto;
-  width: min(100%, 440px);
-  padding: 20px;
-  border-radius: 20px;
+  width: min(100%, 460px);
+  padding: 22px 24px 24px;
+  border-radius: 24px;
   background: var(--white);
-  box-shadow: 0 24px 60px rgba(7, 7, 50, 0.4);
+  box-shadow: 0 28px 70px rgba(7, 7, 50, 0.45);
   color: var(--text);
 }
 
+.vsl-form-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 28px;
+}
+
 .vsl-form-count {
+  margin-left: auto;
   color: var(--muted);
   font-size: 13px;
   font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.vsl-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  margin-left: -6px;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: 600 13px/1 var(--font-body);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.vsl-back[hidden] {
+  display: none;
+}
+
+.vsl-back:hover {
+  background: var(--paper);
+  color: var(--accent);
 }
 
 .vsl-form-progress {
-  height: 4px;
-  margin-top: 8px;
+  height: 3px;
+  margin-top: 10px;
   border-radius: 999px;
   background: var(--paper-deep);
   overflow: hidden;
@@ -586,14 +621,15 @@ html.is-video-locked .vsl-gate {
 
 .vsl-form-progress span {
   display: block;
-  width: 20%;
+  width: calc(100% / 6);
   height: 100%;
+  border-radius: inherit;
   background: var(--accent);
-  transition: width 0.2s ease;
+  transition: width 0.3s ease;
 }
 
 .vsl-form h2 {
-  margin-top: 14px;
+  margin-top: 18px;
   color: var(--ink);
   font-size: clamp(20px, 2.2vw, 24px);
   line-height: 1.2;
@@ -601,96 +637,143 @@ html.is-video-locked .vsl-gate {
 
 .vsl-step {
   display: grid;
-  gap: 8px;
-  min-width: 0;
-  margin: 14px 0 0;
-  padding: 0;
-  border: 0;
+  gap: 10px;
+  margin-top: 14px;
+  animation: vsl-step-in 0.24s ease both;
+  transition: opacity 0.14s ease, transform 0.14s ease;
 }
 
 .vsl-step[hidden] {
   display: none;
 }
 
-.vsl-step legend,
-.vsl-field > span {
-  margin-bottom: 4px;
-  padding: 0;
+.vsl-step.is-leaving {
+  opacity: 0;
+  transform: translateX(-14px);
+}
+
+@keyframes vsl-step-in {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.vsl-question {
   color: var(--ink);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
-}
-
-.vsl-field {
-  display: grid;
-  gap: 4px;
-}
-
-.vsl-field input {
-  width: 100%;
-  min-height: 48px;
-  padding: 10px 12px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--paper);
-  color: var(--text);
-  font: 400 16px/1.4 var(--font-body);
+  line-height: 1.35;
 }
 
 .vsl-options {
   display: grid;
-  gap: 8px;
-}
-
-.vsl-options-pair {
   grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 
-.vsl-options label {
-  position: relative;
-  display: block;
+.vsl-options-4 {
+  grid-template-columns: repeat(4, 1fr);
 }
 
-.vsl-options input {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.vsl-options span {
+.vsl-option {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
-  padding: 8px 12px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--paper);
+  min-height: 56px;
+  padding: 10px 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
   color: var(--ink);
   font: 600 15px/1.25 var(--font-body);
   text-align: center;
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
 }
 
-.vsl-options input:checked + span {
+@media (hover: hover) {
+  .vsl-option:hover {
+    border-color: var(--accent);
+    background: #f1f5ff;
+    box-shadow: 0 6px 16px rgba(20, 85, 255, 0.14);
+    transform: translateY(-1px);
+  }
+
+  .vsl-option[aria-pressed="true"]:hover {
+    background: var(--accent-hover);
+  }
+}
+
+.vsl-option:active {
+  transform: translateY(0);
+}
+
+.vsl-option[aria-pressed="true"] {
   border-color: var(--accent);
   background: var(--accent);
   color: #fff;
+  box-shadow: 0 8px 20px rgba(20, 85, 255, 0.28);
 }
 
-.vsl-options input:focus-visible + span {
+.vsl-option:focus-visible,
+.vsl-back:focus-visible,
+.vsl-input-go:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
-.vsl-step[aria-invalid="true"] .vsl-options span,
-.vsl-field input[aria-invalid="true"] {
+.vsl-input {
+  position: relative;
+}
+
+.vsl-input input {
+  width: 100%;
+  min-height: 54px;
+  padding: 12px 56px 12px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  color: var(--text);
+  font: 400 16px/1.4 var(--font-body);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.vsl-input input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(20, 85, 255, 0.14);
+}
+
+.vsl-input input[aria-invalid="true"] {
   border-color: var(--danger);
   background: #fff7f5;
+}
+
+.vsl-input-go {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--ink);
+  color: #fff;
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.vsl-input-go:hover {
+  background: var(--accent);
 }
 
 .vsl-error {
@@ -699,35 +782,16 @@ html.is-video-locked .vsl-gate {
   font-weight: 500;
 }
 
-.vsl-step .consent {
+.vsl-submit {
+  width: 100%;
+  min-height: 52px;
   margin-top: 4px;
 }
 
-.vsl-form-nav {
-  display: flex;
-  gap: 8px;
-  margin-top: 16px;
-}
-
-.vsl-back {
-  min-height: 48px;
-  padding: 10px 18px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--ink);
-  font: 600 15px/1.2 var(--font-body);
-  cursor: pointer;
-}
-
-.vsl-back:hover {
-  border-color: var(--ink);
-}
-
-.vsl-next {
-  flex: 1;
-  min-height: 48px;
-  padding: 10px 18px;
+.vsl-step .consent {
+  margin-top: 0;
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 @media (max-width: 599px) {
@@ -735,25 +799,54 @@ html.is-video-locked .vsl-gate {
     place-items: start center;
     padding: 28% 12px 0;
   }
+
+  .vsl-options-4 {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (max-width: 480px) {
-
   .vsl-form {
-    padding: 16px;
+    padding: 16px 16px 18px;
+    border-radius: 20px;
   }
 
   .vsl-form h2 {
-    margin-top: 10px;
+    margin-top: 12px;
+    font-size: 20px;
   }
 
   .vsl-step {
     margin-top: 10px;
   }
 
-  .vsl-options span {
-    min-height: 40px;
+  .vsl-question {
+    font-size: 15px;
+  }
+
+  .vsl-options {
+    gap: 8px;
+  }
+
+  .vsl-option {
+    min-height: 50px;
     font-size: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vsl-step {
+    animation: none;
+    transition: none;
+  }
+
+  .vsl-option,
+  .vsl-form-progress span {
+    transition: none;
+  }
+
+  .vsl-option:hover {
+    transform: none;
   }
 }
 

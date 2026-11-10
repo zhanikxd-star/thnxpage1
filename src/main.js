@@ -41,15 +41,16 @@ const examplePlayer = mountExamplePlayer(playerRoot, {
 if (playerBar) playerBar.inert = root.classList.contains("is-video-locked");
 
 function grantVideoAccess(form) {
-  const audience = form.querySelector("[name='audience']:checked")?.value;
+  const audience = form.elements.namedItem("audience")?.value;
   try {
     localStorage.setItem(ACCESS_KEY, "1");
     if (audience) localStorage.setItem(AUDIENCE_KEY, audience);
   } catch (error) {}
   root.classList.remove("is-video-locked");
   if (playerBar) playerBar.inert = false;
-  ["name", "phone"].forEach((name) => {
+  ["name", "phone", "grade"].forEach((name) => {
     const value = form.elements.namedItem(name)?.value;
+    if (!value) return;
     document.querySelectorAll(`#consult-form [name='${name}'], #consult-dialog-form [name='${name}']`).forEach((field) => {
       if (!field.value) field.value = value;
     });
@@ -59,18 +60,21 @@ function grantVideoAccess(form) {
 
 const PHONE_MIN_DIGITS = 6;
 
+const STEP_PAUSE_MS = 180;
+const STEP_LEAVE_MS = 140;
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
 function mountVideoSteps(form, { onDone }) {
   if (!form) return null;
   const steps = [...form.querySelectorAll("[data-step]")];
   const count = form.querySelector("[data-step-label]");
   const fill = form.querySelector("[data-step-fill]");
   const back = form.querySelector("[data-step-back]");
-  const next = form.querySelector("[data-step-next]");
   let index = 0;
+  let moving = false;
 
   function problem(step) {
     const kind = step.dataset.step;
-    if (kind === "audience" && !form.querySelector("[name='audience']:checked")) return "Выберите, кто смотрит";
     if (kind === "name" && !form.elements.namedItem("name").value.trim()) return "Укажите ФИО";
     if (kind === "phone") {
       const value = form.elements.namedItem("phone").value;
@@ -81,55 +85,87 @@ function mountVideoSteps(form, { onDone }) {
 
   function showProblem(step, message) {
     const slot = step.querySelector(".vsl-error");
-    if (!slot) return;
-    const target = step.matches("fieldset") ? step : step.querySelector("input");
+    const input = step.querySelector("input:not([type='hidden'])");
+    if (!slot || !input) return;
     slot.textContent = message;
     slot.hidden = !message;
-    target.setAttribute("aria-invalid", message ? "true" : "false");
-    if (message) target.setAttribute("aria-describedby", slot.id);
-    else target.removeAttribute("aria-describedby");
+    input.setAttribute("aria-invalid", message ? "true" : "false");
+    if (message) input.setAttribute("aria-describedby", slot.id);
+    else input.removeAttribute("aria-describedby");
   }
 
   function focusStep() {
     const step = steps[index];
-    (step.querySelector("input:checked") || step.querySelector("input"))?.focus();
+    const target =
+      step.querySelector(".vsl-option[aria-pressed='true']") ||
+      step.querySelector(".vsl-option") ||
+      step.querySelector("input:not([type='hidden'])");
+    target?.focus({ preventScroll: true });
   }
 
-  function show(nextIndex, { focus = true } = {}) {
-    index = nextIndex;
+  function paint() {
     steps.forEach((step, n) => {
       step.hidden = n !== index;
     });
     if (count) count.textContent = `Шаг ${index + 1} из ${steps.length}`;
     if (fill) fill.style.width = `${((index + 1) / steps.length) * 100}%`;
     if (back) back.hidden = index === 0;
-    if (next) next.textContent = index === steps.length - 1 ? "Смотреть видео" : "Далее";
-    if (focus) focusStep();
   }
+
+  function go(nextIndex, { focus = true } = {}) {
+    if (moving || nextIndex === index || nextIndex < 0 || nextIndex >= steps.length) return;
+    const leaving = steps[index];
+    const finish = () => {
+      leaving.classList.remove("is-leaving");
+      index = nextIndex;
+      paint();
+      moving = false;
+      if (focus) focusStep();
+    };
+    moving = true;
+    if (reducedMotion.matches) {
+      finish();
+      return;
+    }
+    leaving.classList.add("is-leaving");
+    window.setTimeout(finish, STEP_LEAVE_MS);
+  }
+
+  form.addEventListener("click", (event) => {
+    const option = event.target instanceof Element ? event.target.closest(".vsl-option") : null;
+    if (!option || moving) return;
+    const step = option.closest("[data-step]");
+    const field = form.elements.namedItem(step.dataset.field);
+    if (field) field.value = option.dataset.value;
+    step.querySelectorAll(".vsl-option").forEach((other) => {
+      other.setAttribute("aria-pressed", other === option ? "true" : "false");
+    });
+    const next = steps.indexOf(step) + 1;
+    window.setTimeout(() => go(next), reducedMotion.matches ? 0 : STEP_PAUSE_MS);
+  });
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     const step = steps[index];
+    if (!step.querySelector("input:not([type='hidden'])")) return;
     const message = problem(step);
     showProblem(step, message);
     if (message) {
       focusStep();
       return;
     }
-    if (index < steps.length - 1) show(index + 1);
+    if (index < steps.length - 1) go(index + 1);
     else onDone(form);
   });
 
-  form.addEventListener("input", () => {
+  form.addEventListener("input", (event) => {
     const step = steps[index];
-    if (step.querySelector("[aria-invalid='true']") || step.getAttribute("aria-invalid") === "true") {
-      showProblem(step, problem(step));
-    }
+    if (event.target.getAttribute?.("aria-invalid") === "true") showProblem(step, problem(step));
   });
 
-  back?.addEventListener("click", () => show(Math.max(0, index - 1)));
+  back?.addEventListener("click", () => go(index - 1));
 
-  show(0, { focus: false });
+  paint();
   return { focus: focusStep };
 }
 
