@@ -6,6 +6,7 @@ import "@fontsource/onest/600.css";
 import "./styles.css";
 import { mountExamplePlayer } from "./player.js";
 import { createVideoGate } from "./video-gate.js";
+import { sendLead } from "./lead.js";
 
 const ACCESS_KEY = "vls-video-access";
 const AUDIENCE_KEY = "vls-video-audience";
@@ -40,8 +41,23 @@ const examplePlayer = mountExamplePlayer(playerRoot, {
 
 if (playerBar) playerBar.inert = root.classList.contains("is-video-locked");
 
+function fieldValue(form, name) {
+  const field = form.elements.namedItem(name);
+  return field && "value" in field ? field.value : "";
+}
+
 function grantVideoAccess(form) {
-  const audience = form.elements.namedItem("audience")?.value;
+  const audience = fieldValue(form, "audience");
+  sendLead({
+    form: "video",
+    audience,
+    grade: fieldValue(form, "grade"),
+    english: fieldValue(form, "english"),
+    grades: fieldValue(form, "grades"),
+    name: fieldValue(form, "name"),
+    phone: fieldValue(form, "phone"),
+    website: fieldValue(form, "website"),
+  }).catch(() => {});
   try {
     localStorage.setItem(ACCESS_KEY, "1");
     if (audience) localStorage.setItem(AUDIENCE_KEY, audience);
@@ -59,6 +75,7 @@ function grantVideoAccess(form) {
 }
 
 const PHONE_MIN_DIGITS = 6;
+const SEND_FAILED_TEXT = "Не получилось отправить заявку. Попробуйте ещё раз через минуту.";
 
 const STEP_PAUSE_MS = 180;
 const STEP_LEAVE_MS = 140;
@@ -294,6 +311,7 @@ function bindConsultForm(form, { onSuccess } = {}) {
     });
 
     if (firstInvalid) {
+      if (errorText) errorText.textContent = invalidText;
       errorSummary.hidden = false;
       firstInvalid.focus();
       return;
@@ -304,10 +322,46 @@ function bindConsultForm(form, { onSuccess } = {}) {
       onSuccess(form);
       return;
     }
-    form.hidden = true;
-    success.hidden = false;
-    success.focus();
+    send();
   });
+
+  const submitButton = form.querySelector("button[type='submit']");
+  const submitLabel = submitButton?.textContent;
+  const errorText = errorSummary?.querySelector("p");
+  const invalidText = errorText?.textContent;
+  let sending = false;
+
+  async function send() {
+    if (sending) return;
+    sending = true;
+    if (errorText) errorText.textContent = invalidText;
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = "Отправляем…";
+    }
+    try {
+      await sendLead({
+        form: "consult",
+        placement: form.id === "consult-dialog-form" ? "popup" : "page",
+        name: fieldValue(form, "name"),
+        phone: fieldValue(form, "phone"),
+        grade: fieldValue(form, "grade"),
+        website: fieldValue(form, "website"),
+      });
+      form.hidden = true;
+      success.hidden = false;
+      success.focus();
+    } catch (error) {
+      if (errorText) errorText.textContent = SEND_FAILED_TEXT;
+      errorSummary.hidden = false;
+    } finally {
+      sending = false;
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = submitLabel;
+      }
+    }
+  }
 }
 
 bindConsultForm(document.querySelector("#consult-form"));

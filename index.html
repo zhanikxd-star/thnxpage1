@@ -112,9 +112,10 @@
               </div>
             </div>
 
-            <!-- Заявка никуда не отправляется: ответы остаются на странице, имя и телефон копируются в формы записи. -->
+            <!-- Ответы уходят в amoCRM через api/lead.php в фоне; видео открывается, даже если CRM не ответила. Имя, телефон и класс копируются в формы записи. -->
             <div class="vsl-gate">
               <form class="vsl-form" id="access-form" novalidate aria-labelledby="access-title">
+                <div class="hp-field" aria-hidden="true"><label>Сайт <input name="website" type="text" tabindex="-1" autocomplete="off" /></label></div>
                 <div class="vsl-form-top">
                   <button class="vsl-back" type="button" data-step-back hidden>
                     <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M19 12H6M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -719,11 +720,12 @@
           <div class="consult-panel">
             <!-- Текст успеха — плейсхолдер: на публичных страницах его нет. -->
             <div class="form-success" id="consult-success" tabindex="-1" hidden>
-              <h3>Заявка принята на этой странице</h3>
-              <p>Она никуда не отправлена: адрес приёма ещё не назван. Когда он появится, с вами свяжутся, чтобы договориться о времени бесплатного разбора.</p>
+              <h3>Заявка отправлена</h3>
+              <p>С вами свяжутся, чтобы договориться о времени бесплатного разбора.</p>
             </div>
 
             <form id="consult-form" novalidate>
+              <div class="hp-field" aria-hidden="true"><label>Сайт <input name="website" type="text" tabindex="-1" autocomplete="off" /></label></div>
               <!-- Текст ошибки — плейсхолдер: на публичных страницах его нет. -->
               <div class="form-error" id="consult-error" role="alert" hidden>
                 <p>Заявку пока нельзя отправить: заполните обязательные поля.</p>
@@ -801,11 +803,12 @@
         <p class="consult-dialog-line">Онлайн-встреча от 30 до 45 минут.</p>
 
         <div class="form-success" id="consult-dialog-success" tabindex="-1" hidden>
-          <h3>Заявка принята на этой странице</h3>
-          <p>Она никуда не отправлена: адрес приёма ещё не назван. Когда он появится, с вами свяжутся, чтобы договориться о времени бесплатного разбора.</p>
+          <h3>Заявка отправлена</h3>
+          <p>С вами свяжутся, чтобы договориться о времени бесплатного разбора.</p>
         </div>
 
         <form id="consult-dialog-form" novalidate>
+          <div class="hp-field" aria-hidden="true"><label>Сайт <input name="website" type="text" tabindex="-1" autocomplete="off" /></label></div>
           <div class="form-error" id="consult-dialog-error" role="alert" hidden>
             <p>Заявку пока нельзя отправить: заполните обязательные поля.</p>
           </div>
@@ -845,7 +848,6 @@
       </div>
     </dialog>
 
-    <!-- Контакты для доступа к ролику никуда не отправляются: адрес приёма заявок ещё не назван. -->
 
     <script type="module" src="/src/main.js"></script>
   </body>
