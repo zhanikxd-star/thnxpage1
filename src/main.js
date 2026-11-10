@@ -10,8 +10,9 @@ import { createVideoGate } from "./video-gate.js";
 const ACCESS_KEY = "vls-video-access";
 const AUDIENCE_KEY = "vls-video-audience";
 const root = document.documentElement;
-const accessDialog = document.querySelector("#access-dialog");
+const accessForm = document.querySelector("#access-form");
 const playerRoot = document.querySelector(".player");
+const playerBar = playerRoot?.querySelector(".player-bar");
 
 function videoFor(audience) {
   if (audience === "student") return playerRoot?.dataset.videoStudent;
@@ -34,8 +35,10 @@ const examplePlayer = mountExamplePlayer(playerRoot, {
   onEnded: () => videoGate.unlock(),
   onFail: () => videoGate.unlock({ keep: false }),
   isLocked: () => root.classList.contains("is-video-locked"),
-  onLocked: () => openDialog(accessDialog),
+  onLocked: () => accessSteps?.focus(),
 });
+
+if (playerBar) playerBar.inert = root.classList.contains("is-video-locked");
 
 function grantVideoAccess(form) {
   const audience = form.querySelector("[name='audience']:checked")?.value;
@@ -44,15 +47,93 @@ function grantVideoAccess(form) {
     if (audience) localStorage.setItem(AUDIENCE_KEY, audience);
   } catch (error) {}
   root.classList.remove("is-video-locked");
+  if (playerBar) playerBar.inert = false;
   ["name", "phone"].forEach((name) => {
     const value = form.elements.namedItem(name)?.value;
     document.querySelectorAll(`#consult-form [name='${name}'], #consult-dialog-form [name='${name}']`).forEach((field) => {
       if (!field.value) field.value = value;
     });
   });
-  dismissDialog(accessDialog);
-  examplePlayer?.play(videoFor(audience));
+  examplePlayer?.start(videoFor(audience));
 }
+
+const PHONE_MIN_DIGITS = 6;
+
+function mountVideoSteps(form, { onDone }) {
+  if (!form) return null;
+  const steps = [...form.querySelectorAll("[data-step]")];
+  const count = form.querySelector("[data-step-label]");
+  const fill = form.querySelector("[data-step-fill]");
+  const back = form.querySelector("[data-step-back]");
+  const next = form.querySelector("[data-step-next]");
+  let index = 0;
+
+  function problem(step) {
+    const kind = step.dataset.step;
+    if (kind === "audience" && !form.querySelector("[name='audience']:checked")) return "Выберите, кто смотрит";
+    if (kind === "name" && !form.elements.namedItem("name").value.trim()) return "Укажите ФИО";
+    if (kind === "phone") {
+      const value = form.elements.namedItem("phone").value;
+      if (!value.trim() || value.replace(/\D/g, "").length < PHONE_MIN_DIGITS) return "Укажите телефон";
+    }
+    return "";
+  }
+
+  function showProblem(step, message) {
+    const slot = step.querySelector(".vsl-error");
+    if (!slot) return;
+    const target = step.matches("fieldset") ? step : step.querySelector("input");
+    slot.textContent = message;
+    slot.hidden = !message;
+    target.setAttribute("aria-invalid", message ? "true" : "false");
+    if (message) target.setAttribute("aria-describedby", slot.id);
+    else target.removeAttribute("aria-describedby");
+  }
+
+  function focusStep() {
+    const step = steps[index];
+    (step.querySelector("input:checked") || step.querySelector("input"))?.focus();
+  }
+
+  function show(nextIndex, { focus = true } = {}) {
+    index = nextIndex;
+    steps.forEach((step, n) => {
+      step.hidden = n !== index;
+    });
+    if (count) count.textContent = `Шаг ${index + 1} из ${steps.length}`;
+    if (fill) fill.style.width = `${((index + 1) / steps.length) * 100}%`;
+    if (back) back.hidden = index === 0;
+    if (next) next.textContent = index === steps.length - 1 ? "Смотреть видео" : "Далее";
+    if (focus) focusStep();
+  }
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const step = steps[index];
+    const message = problem(step);
+    showProblem(step, message);
+    if (message) {
+      focusStep();
+      return;
+    }
+    if (index < steps.length - 1) show(index + 1);
+    else onDone(form);
+  });
+
+  form.addEventListener("input", () => {
+    const step = steps[index];
+    if (step.querySelector("[aria-invalid='true']") || step.getAttribute("aria-invalid") === "true") {
+      showProblem(step, problem(step));
+    }
+  });
+
+  back?.addEventListener("click", () => show(Math.max(0, index - 1)));
+
+  show(0, { focus: false });
+  return { focus: focusStep };
+}
+
+const accessSteps = mountVideoSteps(accessForm, { onDone: grantVideoAccess });
 
 const header = document.querySelector(".header");
 const navToggle = document.querySelector("#nav-toggle");
@@ -90,8 +171,6 @@ faqItems.forEach((item) => {
 // Куда уходит заявка, сайт не называет: ни CRM, ни почта, ни другой адрес.
 // Этот обработчик только показывает локальный успех и ничего не отправляет.
 // Текст успеха и текст ошибки на публичных страницах не найдены — строки ниже плейсхолдер.
-
-const PHONE_MIN_DIGITS = 6;
 
 function bindConsultForm(form, { onSuccess } = {}) {
   if (!form) return;
@@ -133,19 +212,6 @@ function bindConsultForm(form, { onSuccess } = {}) {
     else field.removeAttribute("aria-describedby");
   }
 
-  function validateAudience() {
-    const group = form.querySelector(".audience");
-    if (!group) return null;
-    const message = form.querySelector("[name='audience']:checked") ? "" : "Выберите, кто смотрит";
-    group.setAttribute("aria-invalid", message ? "true" : "false");
-    const slot = fieldError("audience");
-    if (slot) {
-      slot.textContent = message;
-      slot.hidden = !message;
-    }
-    return message ? form.querySelector("[name='audience']") : null;
-  }
-
   function clearFormErrors() {
     if (errorSummary) errorSummary.hidden = true;
     Array.from(form.elements).forEach((field) => {
@@ -157,10 +223,6 @@ function bindConsultForm(form, { onSuccess } = {}) {
   form.addEventListener("input", (event) => {
     const field = event.target;
     if (!(field instanceof HTMLElement) || !field.name || !fieldError(field.name)) return;
-    if (field.name === "audience") {
-      if (form.querySelector(".audience")?.getAttribute("aria-invalid") === "true") validateAudience();
-      return;
-    }
     if (field.getAttribute("aria-invalid") === "true") {
       showFieldError(field, validateField(field));
     }
@@ -174,7 +236,7 @@ function bindConsultForm(form, { onSuccess } = {}) {
       .map((name) => form.elements.namedItem(name))
       .filter((field) => field instanceof HTMLInputElement || field instanceof HTMLSelectElement);
 
-    let firstInvalid = validateAudience();
+    let firstInvalid = null;
     fields.forEach((field) => {
       const message = validateField(field);
       showFieldError(field, message);
@@ -200,7 +262,6 @@ function bindConsultForm(form, { onSuccess } = {}) {
 
 bindConsultForm(document.querySelector("#consult-form"));
 bindConsultForm(document.querySelector("#consult-dialog-form"));
-bindConsultForm(document.querySelector("#access-form"), { onSuccess: grantVideoAccess });
 
 const consultDialog = document.querySelector("#consult-dialog");
 
@@ -208,7 +269,7 @@ function openDialog(dialog) {
   if (!dialog || dialog.open) return;
   document.body.classList.add("dialog-lock");
   dialog.showModal();
-  const name = dialog.querySelector("input[name='audience'], input[name='name']");
+  const name = dialog.querySelector("input[name='name']");
   const success = dialog.querySelector(".form-success");
   if (name && !name.closest("form")?.hidden) name.focus();
   else success?.focus();
@@ -223,7 +284,7 @@ function dismissDialog(dialog) {
   });
 }
 
-[consultDialog, accessDialog].forEach((dialog) => {
+[consultDialog].forEach((dialog) => {
   if (!dialog) return;
   dialog.addEventListener("close", () => {
     document.body.classList.remove("dialog-lock");
@@ -236,10 +297,6 @@ function dismissDialog(dialog) {
 
 document.querySelectorAll("[data-open-consult]").forEach((button) => {
   button.addEventListener("click", () => openDialog(consultDialog));
-});
-
-document.querySelectorAll("[data-open-access]").forEach((button) => {
-  button.addEventListener("click", () => openDialog(accessDialog));
 });
 
 const selectionTimer = document.querySelector("[data-selection-timer]");

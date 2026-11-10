@@ -71,6 +71,8 @@ export function mountExamplePlayer(root, { videoId: initialVideoId, onProgress, 
   let correcting = false;
   let player = null;
   let poll = 0;
+  let loadedId = videoId;
+  let pendingStart = false;
 
   function guard() {
     if (!player?.getCurrentTime) return;
@@ -99,6 +101,7 @@ export function mountExamplePlayer(root, { videoId: initialVideoId, onProgress, 
       head = step.head;
     }
     paint(root, player, playing);
+    if (isLocked?.()) return;
     onProgress?.(head, player.getDuration?.() || 0);
     if (state === window.YT.PlayerState.ENDED) onEnded?.();
   }
@@ -119,7 +122,7 @@ export function mountExamplePlayer(root, { videoId: initialVideoId, onProgress, 
   play?.addEventListener("click", togglePlay);
   surface?.addEventListener("click", togglePlay);
   mute?.addEventListener("click", () => {
-    if (!player?.isMuted) return;
+    if (locked() || !player?.isMuted) return;
     if (player.isMuted()) player.unMute();
     else player.mute();
     paint(root, player, player.getPlayerState() === window.YT.PlayerState.PLAYING);
@@ -137,6 +140,7 @@ export function mountExamplePlayer(root, { videoId: initialVideoId, onProgress, 
   }
 
   speed?.addEventListener("click", () => {
+    if (locked()) return;
     const available = player?.getAvailablePlaybackRates?.() || SPEEDS;
     const options = SPEEDS.filter((value) => available.includes(value));
     const list = options.length ? options : [1];
@@ -182,11 +186,26 @@ export function mountExamplePlayer(root, { videoId: initialVideoId, onProgress, 
     event.stopPropagation();
   });
 
+  function begin() {
+    pendingStart = false;
+    head = 0;
+    player.unMute?.();
+    if (loadedId === videoId) {
+      player.seekTo(0, true);
+      player.playVideo();
+    } else {
+      loadedId = videoId;
+      player.loadVideoById({ videoId, startSeconds: 0 });
+    }
+  }
+
+  const preview = Boolean(isLocked?.());
+
   loadYouTubeApi()
     .then(
       (YT) =>
         new Promise((resolve) => {
-          const createdWith = videoId;
+          loadedId = videoId;
           player = new YT.Player("vsl-youtube", {
             videoId,
             host: "https://www.youtube-nocookie.com",
@@ -199,6 +218,8 @@ export function mountExamplePlayer(root, { videoId: initialVideoId, onProgress, 
               iv_load_policy: 3,
               playsinline: 1,
               cc_load_policy: 0,
+              autoplay: preview ? 1 : 0,
+              mute: preview ? 1 : 0,
               origin: window.location.origin,
             },
             events: {
@@ -206,7 +227,11 @@ export function mountExamplePlayer(root, { videoId: initialVideoId, onProgress, 
                 const frame = player.getIframe?.();
                 if (frame) frame.setAttribute("tabindex", "-1");
                 root.ytPlayer = player;
-                if (videoId !== createdWith) player.cueVideoById({ videoId });
+                if (pendingStart) begin();
+                else if (isLocked?.()) {
+                  player.mute();
+                  player.playVideo();
+                }
                 applySpeed();
                 paint(root, player, false);
                 poll = window.setInterval(guard, POLL_MS);
@@ -230,14 +255,11 @@ export function mountExamplePlayer(root, { videoId: initialVideoId, onProgress, 
     });
 
   return {
-    play(nextVideoId) {
-      if (nextVideoId && nextVideoId !== videoId) {
-        videoId = nextVideoId;
-        head = 0;
-        if (player?.loadVideoById) player.loadVideoById({ videoId });
-        return;
-      }
-      player?.playVideo?.();
+    start(nextVideoId) {
+      if (nextVideoId) videoId = nextVideoId;
+      head = 0;
+      if (player?.loadVideoById) begin();
+      else pendingStart = true;
     },
   };
 }

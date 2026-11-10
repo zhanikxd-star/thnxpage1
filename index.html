@@ -72,11 +72,10 @@
       <section class="hero" id="hero" aria-labelledby="hero-title">
         <div class="container hero-stack">
           <h1 id="hero-title">
-            <span class="hero-title-main">Ваш ребёнок может учиться в лучших университетах мира.</span>
-            <span class="hero-title-sub">Узнайте, как сделать это реальностью.</span>
+            <span class="hero-title-main">Как поступить в самые престижные университеты</span>
           </h1>
 
-          <!-- Пример, не речь основателя. Обложка — присланный кадр, пока ролик не запущен.
+          <!-- Пока форма не заполнена, ролик идёт без звука под затемнением и не засчитывается в 3 минуты.
                Плеер свой: шкала не кликается, чужая перемотка возвращается назад. -->
           <figure class="vsl">
             <div class="player" data-video-id="5fZ4j6xsdcI" data-video-parent="5fZ4j6xsdcI" data-video-student="ye1VrledmJ0">
@@ -90,13 +89,6 @@
                   height="941"
                 />
                 <div class="player-shield" data-player-surface></div>
-                <button class="player-lock" type="button" data-open-access>
-                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                    <rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="currentColor" />
-                    <path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                  </svg>
-                  Получить доступ к видео
-                </button>
               </div>
               <div class="player-bar">
                 <button class="player-btn player-icon" type="button" data-player-play aria-pressed="false" aria-label="Смотреть">
@@ -118,12 +110,77 @@
                 </button>
               </div>
             </div>
+
+            <!-- Заявка никуда не отправляется: ответы остаются на странице, имя и телефон копируются в формы записи. -->
+            <div class="vsl-gate">
+              <form class="vsl-form" id="access-form" novalidate aria-labelledby="access-title">
+                <div class="vsl-form-head">
+                  <p class="vsl-form-count" data-step-label>Шаг 1 из 5</p>
+                  <div class="vsl-form-progress" aria-hidden="true"><span data-step-fill></span></div>
+                  <h2 id="access-title">Подберём видео под вас</h2>
+                </div>
+
+                <fieldset class="vsl-step" data-step="audience">
+                  <legend>Кто смотрит видео?</legend>
+                  <div class="vsl-options vsl-options-pair">
+                    <label><input type="radio" name="audience" value="parent" /><span>Родитель</span></label>
+                    <label><input type="radio" name="audience" value="student" /><span>Ученик</span></label>
+                  </div>
+                  <small class="vsl-error" id="access-error-audience" hidden></small>
+                </fieldset>
+
+                <div class="vsl-step" data-step="name" hidden>
+                  <label class="vsl-field">
+                    <span>ФИО</span>
+                    <input name="name" type="text" autocomplete="name" />
+                  </label>
+                  <small class="vsl-error" id="access-error-name" hidden></small>
+                </div>
+
+                <fieldset class="vsl-step" data-step="english" hidden>
+                  <legend>Какой английский?</legend>
+                  <div class="vsl-options">
+                    <label><input type="radio" name="english" value="beginner" /><span>Только начинаю</span></label>
+                    <label><input type="radio" name="english" value="reading" /><span>Читаю простые тексты</span></label>
+                    <label><input type="radio" name="english" value="conversation" /><span>Могу поддержать разговор</span></label>
+                    <label><input type="radio" name="english" value="movies" /><span>Могу смотреть фильмы</span></label>
+                    <label><input type="radio" name="english" value="fluent" /><span>Свободно владею</span></label>
+                  </div>
+                </fieldset>
+
+                <fieldset class="vsl-step" data-step="grades" hidden>
+                  <legend>Оценки в школе</legend>
+                  <div class="vsl-options vsl-options-pair">
+                    <label><input type="radio" name="grades" value="excellent" /><span>Отличник</span></label>
+                    <label><input type="radio" name="grades" value="good" /><span>Хорошист</span></label>
+                    <label><input type="radio" name="grades" value="average" /><span>Троечник</span></label>
+                    <label><input type="radio" name="grades" value="below" /><span>Ниже тройки</span></label>
+                  </div>
+                </fieldset>
+
+                <div class="vsl-step" data-step="phone" hidden>
+                  <label class="vsl-field">
+                    <span>Телефон</span>
+                    <input name="phone" type="tel" inputmode="tel" autocomplete="tel" />
+                  </label>
+                  <small class="vsl-error" id="access-error-phone" hidden></small>
+                  <p class="consent">
+                    Нажимая кнопку, вы соглашаетесь с <a href="https://impact-admissions.com/privacy">политикой обработки персональных данных</a>.
+                  </p>
+                </div>
+
+                <div class="vsl-form-nav">
+                  <button class="vsl-back" type="button" data-step-back hidden>Назад</button>
+                  <button class="btn vsl-next" type="submit" data-step-next>Далее</button>
+                </div>
+              </form>
+            </div>
           </figure>
+          <p class="hero-pitch">Закрытая информация: как приёмная комиссия оценивает студентов</p>
           <button class="btn hero-cta" type="button" data-open-consult>
             Записаться на бесплатную консультацию
             <span aria-hidden="true">→</span>
           </button>
-          <p class="hero-pitch">Посмотрите видео и узнайте, как поступить в университеты США, Европы и Азии, получить грант на обучение и открыть ребёнку международные возможности.</p>
 
           <!-- Файлов официальных логотипов на сайте нет. Здесь наборные названия тех же вузов, не гербы. -->
           <div class="uni-strip">
@@ -797,58 +854,6 @@
     </dialog>
 
     <!-- Контакты для доступа к ролику никуда не отправляются: адрес приёма заявок ещё не назван. -->
-    <dialog class="consult-dialog" id="access-dialog" aria-labelledby="access-dialog-title">
-      <div class="consult-panel">
-        <button class="consult-dialog-close" type="button" data-close-dialog>
-          <span class="visually-hidden">Закрыть</span>
-          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-            <path d="M6 6 18 18M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
-          </svg>
-        </button>
-        <h2 id="access-dialog-title">Получите доступ к видео</h2>
-        <p class="consult-dialog-line">Оставьте контакты, и ролик откроется сразу.</p>
-
-        <form id="access-form" novalidate>
-          <div class="form-error" id="access-error" role="alert" hidden>
-            <p>Заполните имя и телефон, чтобы открыть видео.</p>
-          </div>
-
-          <div class="fields">
-            <fieldset class="audience" aria-describedby="access-error-audience">
-              <legend>Кто смотрит</legend>
-              <div class="audience-options">
-                <label>
-                  <input type="radio" name="audience" value="parent" required />
-                  <span>Родитель</span>
-                </label>
-                <label>
-                  <input type="radio" name="audience" value="student" required />
-                  <span>Ученик</span>
-                </label>
-              </div>
-              <small id="access-error-audience" data-error="audience" hidden></small>
-            </fieldset>
-
-            <label>
-              <span>Имя родителя или ученика</span>
-              <input name="name" type="text" autocomplete="name" required />
-              <small id="access-error-name" data-error="name" hidden></small>
-            </label>
-
-            <label>
-              <span>Телефон</span>
-              <input name="phone" type="tel" inputmode="tel" autocomplete="tel" required />
-              <small id="access-error-phone" data-error="phone" hidden></small>
-            </label>
-          </div>
-
-          <button class="btn" type="submit">Открыть видео</button>
-          <p class="consent">
-            Нажимая кнопку, вы соглашаетесь с <a href="https://impact-admissions.com/privacy">политикой обработки персональных данных</a>.
-          </p>
-        </form>
-      </div>
-    </dialog>
 
     <script type="module" src="/src/main.js"></script>
   </body>
