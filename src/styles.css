@@ -357,9 +357,9 @@ a:hover {
 }
 
 .vsl {
-  width: max(min(100%, 360px), min(100%, 780px, calc((100svh - var(--nav-h) - var(--hero-chrome, 430px)) * 16 / 9)));
+  width: max(min(100%, 360px), min(100%, 1120px, calc((100svh - var(--nav-h) - var(--hero-chrome, 345px)) * 16 / 9)));
   min-width: 0;
-  margin: 26px auto 0;
+  margin: 20px auto 0;
   text-align: left;
 }
 
@@ -372,7 +372,7 @@ a:hover {
 
 .hero-pitch {
   width: min(100%, 620px);
-  margin-top: 14px;
+  margin-top: 12px;
   color: var(--muted);
   font-size: 15px;
   line-height: 1.45;
@@ -537,12 +537,17 @@ html.is-video-locked .vsl {
   z-index: 45;
 }
 
+html.is-video-locked .vsl .player {
+  position: relative;
+  z-index: 0;
+}
+
 html.is-video-locked .vsl::before {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: -1;
-  background: rgba(7, 7, 50, 0.72);
+  z-index: 1;
+  background: rgba(7, 7, 50, 0.62);
 }
 
 html.is-video-locked .vsl-gate {
@@ -552,11 +557,11 @@ html.is-video-locked .vsl-gate {
   display: grid;
   place-items: center;
   padding: 12px;
-  border-radius: 18px;
-  background: rgba(7, 7, 50, 0.4);
+  pointer-events: none;
 }
 
 .vsl-form {
+  pointer-events: auto;
   width: min(100%, 440px);
   padding: 20px;
   border-radius: 20px;
@@ -725,10 +730,14 @@ html.is-video-locked .vsl-gate {
   padding: 10px 18px;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 599px) {
   html.is-video-locked .vsl-gate {
-    padding: 0;
+    place-items: start center;
+    padding: 28% 12px 0;
   }
+}
+
+@media (max-width: 480px) {
 
   .vsl-form {
     padding: 16px;
@@ -1922,6 +1931,10 @@ a.stat-card:hover {
     align-content: start;
   }
 
+  .fields label:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
   .consult-panel .btn,
   .consent,
   .form-error {
@@ -2449,8 +2462,15 @@ a.stat-card:hover {
   }
 
   .vsl {
-    width: 100%;
-    margin-top: 18px;
+    width: calc(100% + var(--gutter) * 2);
+    max-width: none;
+    margin-top: 14px;
+    margin-inline: calc(var(--gutter) * -1);
+  }
+
+  .vsl .player {
+    border-inline: 0;
+    border-radius: 0;
   }
 
   .hero-cta {
@@ -2491,7 +2511,7 @@ a.stat-card:hover {
   }
 
   .vsl {
-    --hero-chrome: 360px;
+    --hero-chrome: 300px;
     margin-top: 18px;
   }
 

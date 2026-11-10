@@ -197,7 +197,6 @@ function bindConsultForm(form, { onSuccess } = {}) {
     }
 
     if (field.name === "grade" && !value) return "Выберите класс";
-    if (field.name === "country" && !value) return "Выберите страну интереса";
 
     return "";
   }
@@ -232,7 +231,7 @@ function bindConsultForm(form, { onSuccess } = {}) {
     event.preventDefault();
     if ((!success && !onSuccess) || !errorSummary) return;
 
-    const fields = ["name", "phone", "grade", "country"]
+    const fields = ["name", "phone", "grade"]
       .map((name) => form.elements.namedItem(name))
       .filter((field) => field instanceof HTMLInputElement || field instanceof HTMLSelectElement);
 

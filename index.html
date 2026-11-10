@@ -74,6 +74,7 @@
           <h1 id="hero-title">
             <span class="hero-title-main">Как поступить в самые престижные университеты</span>
           </h1>
+          <p class="hero-pitch">Закрытая информация: как приёмная комиссия оценивает студентов</p>
 
           <!-- Пока форма не заполнена, ролик идёт без звука под затемнением и не засчитывается в 3 минуты.
                Плеер свой: шкала не кликается, чужая перемотка возвращается назад. -->
@@ -139,9 +140,8 @@
 
                 <fieldset class="vsl-step" data-step="english" hidden>
                   <legend>Какой английский?</legend>
-                  <div class="vsl-options">
-                    <label><input type="radio" name="english" value="beginner" /><span>Только начинаю</span></label>
-                    <label><input type="radio" name="english" value="reading" /><span>Читаю простые тексты</span></label>
+                  <div class="vsl-options vsl-options-pair">
+                    <label><input type="radio" name="english" value="basic" /><span>Знаю основы</span></label>
                     <label><input type="radio" name="english" value="conversation" /><span>Могу поддержать разговор</span></label>
                     <label><input type="radio" name="english" value="movies" /><span>Могу смотреть фильмы</span></label>
                     <label><input type="radio" name="english" value="fluent" /><span>Свободно владею</span></label>
@@ -176,7 +176,6 @@
               </form>
             </div>
           </figure>
-          <p class="hero-pitch">Закрытая информация: как приёмная комиссия оценивает студентов</p>
           <button class="btn hero-cta" type="button" data-open-consult>
             Записаться на бесплатную консультацию
             <span aria-hidden="true">→</span>
@@ -742,18 +741,6 @@
                   </select>
                   <small id="error-grade" data-error="grade" hidden></small>
                 </label>
-
-                <label>
-                  <span>Страна интереса</span>
-                  <!-- Плейсхолдер: список стран интереса не утверждён.
-                       На публичной форме этого поля нет. Страны из заголовка, FAQ и страницы «страны»
-                       не являются готовым списком значений — не подставлять их как опции. -->
-                  <select name="country" required>
-                    <option value="">Выберите</option>
-                    <option value="pending">Список стран ещё не утверждён</option>
-                  </select>
-                  <small id="error-country" data-error="country" hidden></small>
-                </label>
               </div>
 
               <button class="btn" type="submit">Записаться на бесплатную консультацию</button>
@@ -833,15 +820,6 @@
                 <option>Другое</option>
               </select>
               <small id="dialog-error-grade" data-error="grade" hidden></small>
-            </label>
-
-            <label>
-              <span>Страна интереса</span>
-              <select name="country" required>
-                <option value="">Выберите</option>
-                <option value="pending">Список стран ещё не утверждён</option>
-              </select>
-              <small id="dialog-error-country" data-error="country" hidden></small>
             </label>
           </div>
 
