@@ -186,6 +186,15 @@ export function mountExamplePlayer(root, { videoId: initialVideoId, onProgress, 
     event.stopPropagation();
   });
 
+  function hideCaptions() {
+    if (!player) return;
+    try {
+      player.unloadModule?.("captions");
+      player.unloadModule?.("cc");
+      player.setOption?.("captions", "track", {});
+    } catch (error) {}
+  }
+
   function begin() {
     pendingStart = false;
     head = 0;
@@ -197,6 +206,7 @@ export function mountExamplePlayer(root, { videoId: initialVideoId, onProgress, 
       loadedId = videoId;
       player.loadVideoById({ videoId, startSeconds: 0 });
     }
+    hideCaptions();
   }
 
   const preview = Boolean(isLocked?.());
@@ -227,6 +237,7 @@ export function mountExamplePlayer(root, { videoId: initialVideoId, onProgress, 
                 const frame = player.getIframe?.();
                 if (frame) frame.setAttribute("tabindex", "-1");
                 root.ytPlayer = player;
+                hideCaptions();
                 if (pendingStart) begin();
                 else if (isLocked?.()) {
                   player.mute();
@@ -237,7 +248,9 @@ export function mountExamplePlayer(root, { videoId: initialVideoId, onProgress, 
                 poll = window.setInterval(guard, POLL_MS);
                 resolve();
               },
-              onStateChange: () => {
+              onApiChange: hideCaptions,
+              onStateChange: (event) => {
+                if (event?.data === 1) hideCaptions();
                 if (player.getPlaybackRate?.() !== rate) applySpeed();
                 guard();
               },
